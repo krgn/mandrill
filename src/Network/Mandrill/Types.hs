@@ -19,3 +19,5 @@ $(generateAPITools users [enumTool, jsonTool, quickCheckTool])
 
 $(generate messages)
 $(generateAPITools messages [enumTool, jsonTool, quickCheckTool])
+
+type ApiKey = String

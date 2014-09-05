@@ -63,6 +63,8 @@ library
                      , api-tools
                      , template-haskell
                      , aeson
+                     , http-conduit
+                     , bytestring
 
 test-suite mandrill-tests
   type:                exitcode-stdio-1.0
@@ -74,11 +76,11 @@ test-suite mandrill-tests
   
   main-is:             Spec.hs
 
-  other-modules:       Network.Mandrill
+  other-modules:       Network.Mandrill.Types
+                     , Network.Mandrill.Users
 
   build-depends:       base >=4.7 && <4.8 
                      , hspec
                      , QuickCheck
-                     , api-tools
 
   default-language:    Haskell2010
