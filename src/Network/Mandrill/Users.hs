@@ -3,8 +3,10 @@
 module Network.Mandrill.Users where
 
 import Data.Aeson
+import Network.Mandrill.ApiError
 import Network.Mandrill.Types
 import Network.Mandrill.Utils
+import Data.API.Tools.Mandrill
 
 import qualified Data.ByteString.Lazy as LBS
 

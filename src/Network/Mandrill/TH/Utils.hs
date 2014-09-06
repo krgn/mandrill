@@ -8,14 +8,6 @@ import Data.API.Types
 utils :: API
 utils = [api|
 
-apiError :: ApiError
-  // An API error record
-  = record
-    status  :: string
-    code    :: integer
-    name    :: string
-    message :: string
-
 tag :: Tag
   // a tag
   = string
