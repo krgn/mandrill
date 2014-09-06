@@ -1,8 +1,23 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Network.Mandrill.Users where
 
+import Data.Aeson
 import Network.Mandrill.Types
-import Network.HTTP
+import Network.Mandrill.Utils
 
--- simpleHTTP (postRequestWithBody (url ++ "/users/ping2.json") "application/json" (CBS.unpack $ LBS.toStrict input))
-listUsers :: ApiKey -> [User]
-listUsers = undefined
+import qualified Data.ByteString.Lazy as LBS
+
+testKey :: ApiKey
+testKey = "b0c5wPDu1J9q_7MqPYAqBg"
+
+info :: ApiKey -> IO (Either ApiError User)
+info key = do
+  let obj = encode (object ["key" .= key])
+  resp <- performRequest "/users/info.json" obj
+  return $ parseResponse resp
+
+ping :: ApiKey -> IO LBS.ByteString
+ping key = do
+  let obj = encode (object ["key" .= key])
+  performRequest "/users/ping.json" obj
