@@ -67,9 +67,23 @@ test-suite mandrill-tests
 
   other-modules:       Network.Mandrill.Types
                      , Network.Mandrill.ApiError
-                     , Network.Mandrill.Users
                      , Network.Mandrill.Utils
                      , Data.API.Tools.Mandrill
+                     , Network.Mandrill.Exports
+                     , Network.Mandrill.Inbound
+                     , Network.Mandrill.Ips
+                     , Network.Mandrill.Messages
+                     , Network.Mandrill.Metadata
+                     , Network.Mandrill.Rejects
+                     , Network.Mandrill.Senders
+                     , Network.Mandrill.Subaccounts
+                     , Network.Mandrill.Tags
+                     , Network.Mandrill.Templates
+                     , Network.Mandrill.Urls
+                     , Network.Mandrill.Users
+                     , Network.Mandrill.Webhooks
+                     , Network.Mandrill.Whitelists
+  
 
   build-depends:       base >=4.7 && <4.8 
                      , hspec
