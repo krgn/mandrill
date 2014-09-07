@@ -11,20 +11,19 @@ import           Data.API.JSON
 import           Data.API.Tools.Combinators
 import           Data.API.Tools.Datatypes
 import           Data.API.Types
-import           Data.API.Utils
 import           Data.Monoid
 import           Language.Haskell.TH
-import           Language.Haskell.TH.Syntax
 import           Data.Default
 import qualified Data.ByteString.Lazy           as LBS
 
 class (FromJSONWithErrs l, FromJSONWithErrs r) => MandrillResponse l r where
   parseResponse :: (FromJSONWithErrs l, FromJSONWithErrs r) => LBS.ByteString -> Either l r
 
--- | Construct a simple TH definition
+-- | copy/paste from private module
 simpleD :: Name -> ExpQ -> Q Dec
 simpleD n e = funD n [clause [] (normalB e) []]
 
+-- | copy/paste from private module
 optionalInstanceD :: ToolSettings -> Name -> [TypeQ] -> [DecQ] -> Q [Dec]
 optionalInstanceD stgs c tqs dqs = do
   ts <- sequence tqs
@@ -47,16 +46,16 @@ mandrillTool nm = apiNodeTool $ apiSpecTool
                   mempty
 
 gen_sr_ex :: String -> Tool (APINode, SpecRecord)
-gen_sr_ex errType = mkTool $ \ ts (an, sn) -> mkInst ts an errType (expCon an errType)
+gen_sr_ex errType = mkTool $ \ ts (an, _) -> mkInst ts an errType (expCon an errType)
 
 gen_sn_ex :: String ->Tool (APINode, SpecNewtype)
-gen_sn_ex errType = mkTool $ \ ts (an, sn) -> mkInst ts an errType (expCon an errType)            
+gen_sn_ex errType = mkTool $ \ ts (an, _) -> mkInst ts an errType (expCon an errType)            
 
 gen_su_ex :: String ->Tool (APINode, SpecUnion)
-gen_su_ex errType = mkTool $ \ ts (an, sn) -> mkInst ts an errType (expCon an errType)
+gen_su_ex errType = mkTool $ \ ts (an, _) -> mkInst ts an errType (expCon an errType)
 
 gen_se_ex :: String ->Tool (APINode, SpecEnum)
-gen_se_ex errType = mkTool $ \ ts (an, sn) -> mkInst ts an errType (expCon an errType)
+gen_se_ex errType = mkTool $ \ ts (an, _) -> mkInst ts an errType (expCon an errType)
 
 mkInst :: ToolSettings -> APINode -> String -> ExpQ -> Q [Dec]
 mkInst ts an errType e =

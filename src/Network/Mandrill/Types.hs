@@ -15,12 +15,15 @@ import Network.Mandrill.TH.Messages
 
 -- now, splice in all our data type definitions
 $(generate utils)
-$(generateAPITools utils [enumTool, jsonTool, lensTool, mandrillTool "ApiError"])
+$(generateAPITools utils
+  [enumTool, jsonTool, lensTool, mandrillTool "ApiError"])
 
 $(generate users)
-$(generateAPITools users [enumTool, jsonTool, lensTool, mandrillTool "ApiError"])
+$(generateAPITools users
+  [enumTool, jsonTool, lensTool, mandrillTool "ApiError"])
 
 $(generate messages)
-$(generateAPITools messages [enumTool, jsonTool, lensTool, mandrillTool "ApiError"])
+$(generateAPITools messages
+  [enumTool, jsonTool, lensTool, mandrillTool "ApiError"])
 
 type ApiKey = String

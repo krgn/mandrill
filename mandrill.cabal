@@ -67,5 +67,6 @@ test-suite mandrill-tests
                      , http-conduit
                      , bytestring
                      , transformers
+                     , data-default
 
   default-language:    Haskell2010

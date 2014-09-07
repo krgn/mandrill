@@ -23,3 +23,6 @@ ping :: ApiKey -> IO LBS.ByteString
 ping key = do
   let obj = encode (object ["key" .= key])
   performRequest "/users/ping.json" obj
+
+senders :: ApiKey -> IO [Sender]
+senders = undefined
