@@ -4,10 +4,11 @@ import Test.Hspec
 -- import Control.Monad.IO.Class
 -- import Test.QuickCheck
 -- import Control.Exception (evaluate)
-
-import Network.Mandrill.Users
-import qualified Data.ByteString.Char8 as CBS
-import qualified Data.ByteString.Lazy as LBS
+import           Network.Mandrill.Types
+import qualified Data.Text              as Text 
+import qualified Network.Mandrill.Users as Users
+import qualified Data.ByteString.Char8  as CBS
+import qualified Data.ByteString.Lazy   as LBS
 
 key :: String
 key = "b0c5wPDu1J9q_7MqPYAqBg"
@@ -22,18 +23,23 @@ test_info :: Spec
 test_info = 
   describe "/users/info.json" $
     it "should return some user info upon valid request" $ do
-      --response <- info key
-      pending
+      response <- Users.info key
+      case response of
+        Left  e -> status e `shouldBe` "error"
+        Right v -> Text.length (_user_username v) > 0 `shouldBe` True
 
 test_ping :: Spec
 test_ping = 
   describe "/users/ping.json" $
     it "should return pong upon valid request" $ do
-      response <- ping key
+      response <- Users.ping key
       CBS.unpack (LBS.toStrict response) `shouldBe` "\"PONG!\""
 
 test_senders :: Spec
 test_senders = 
   describe "/users/senders.json" $
-    it "should return a list of sender that have used this account" $
-      pending
+    it "should return a list of sender that have used this account" $ do
+      response <- Users.senders key
+      case response of
+        Left  e -> status e `shouldBe` "error"
+        Right v -> length v `shouldBe` 1 

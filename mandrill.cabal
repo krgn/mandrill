@@ -54,6 +54,8 @@ library
                      , bytestring
                      , transformers
                      , data-default
+                     , text
+                     , lens
 
 test-suite mandrill-tests
   type:                exitcode-stdio-1.0
@@ -84,7 +86,6 @@ test-suite mandrill-tests
                      , Network.Mandrill.Webhooks
                      , Network.Mandrill.Whitelists
   
-
   build-depends:       base >=4.7 && <4.8 
                      , hspec
                      , QuickCheck
@@ -95,5 +96,7 @@ test-suite mandrill-tests
                      , bytestring
                      , transformers
                      , data-default
+                     , text
+                     , lens
 
   default-language:    Haskell2010
