@@ -9,6 +9,14 @@ import Data.API.Types
 utils :: API
 utils = [api|
 
+sbccnt :: Subaccount
+  // a subaccount 
+  = string
+
+apiKey :: ApiKey
+  // key for api
+  = basic string
+
 tag :: Tag
   // a tag
   = string
@@ -22,7 +30,7 @@ recipient :: Recipient
   = record
     email :: Email
     name  :: string
-    type  :: HeaderType
+    type  :: ? HeaderType
 
 headerType :: HeaderType
   // an enum to discern to cc and bcc header field types
@@ -44,5 +52,21 @@ attachment :: Attachment
     mimeType :: string
     name     :: string
     content  :: string
+
+cnt :: Count
+  // a type alias for a count
+  = integer
+
+url :: Url
+  // a type alias for an Url
+  = string
+  
+ip :: IpAddress
+  // a type alias for ip addresses
+  = string
+
+msgid :: MessageId
+  // a type alias for message Ids
+  = string
 
 |]

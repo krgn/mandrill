@@ -15,7 +15,7 @@ extra-source-files:  README.md
 cabal-version:         >=1.10
 
 library
-  -- ghc-options:         -ddump-splices
+  -- ghc-options:         -ddump-splices -- dump splices to file: cabal build 2> splics
 
   hs-source-dirs:      src
   default-language:    Haskell2010
@@ -40,6 +40,7 @@ library
   other-modules:       Network.Mandrill.TH.Utils
                      , Network.Mandrill.TH.Users
                      , Network.Mandrill.TH.Messages
+                     , Network.Mandrill.TH.Rejects
                      , Network.Mandrill.Utils
                      , Data.API.Tools.Mandrill
 
@@ -53,6 +54,7 @@ library
                      , http-conduit
                      , bytestring
                      , transformers
+                     , containers
                      , data-default
                      , text
                      , lens
@@ -96,6 +98,7 @@ test-suite spec
                      , bytestring
                      , transformers
                      , data-default
+                     , containers
                      , text
                      , lens
 

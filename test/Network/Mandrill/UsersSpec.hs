@@ -10,8 +10,8 @@ import qualified Network.Mandrill.Users as Users
 import qualified Data.ByteString.Char8  as CBS
 import qualified Data.ByteString.Lazy   as LBS
 
-key :: String
-key = "b0c5wPDu1J9q_7MqPYAqBg"
+key :: ApiKey
+key = ApiKey { _ApiKey =  Text.pack "b0c5wPDu1J9q_7MqPYAqBg" }
 
 spec :: Spec
 spec = do
@@ -26,7 +26,7 @@ test_info =
       response <- Users.info key
       case response of
         Left  e -> status e `shouldBe` "error"
-        Right v -> Text.length (_user_username v) > 0 `shouldBe` True
+        Right v -> Text.length (_usr_username v) > 0 `shouldBe` True
 
 test_ping :: Spec
 test_ping = 

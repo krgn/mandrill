@@ -8,7 +8,7 @@ import Data.API.Types
 users :: API
 users = [api|
 
-user :: User
+usr :: User
   // A record for a user
   = record 
     username     :: string
@@ -20,20 +20,26 @@ user :: User
     stats        :: Stats
 
 stat :: Stat
-  // A record for stats about Mandrill user
+  // a stats record 
   = record 
-    sent          :: integer
-    hard_bounces  :: integer
-    soft_bounces  :: integer
-    rejects       :: integer
-    complaints    :: integer
-    unsubs        :: integer
-    opens         :: integer
-    unique_opens  :: integer
-    clicks        :: integer
-    unique_clicks :: integer
+    time          :: ? string
+    tag           :: ? Tag
+    reputation    :: ? Count
+    address       :: ? Email
+    created_at    :: ? utc
+    sent          :: Count
+    hard_bounces  :: Count
+    soft_bounces  :: Count
+    rejects       :: Count
+    complaints    :: Count
+    unsubs        :: Count
+    opens         :: Count
+    unique_opens  :: Count
+    clicks        :: Count
+    unique_clicks :: Count
+    stats         :: ? Stats
 
-stats :: Stats
+usrstats :: Stats
   // A struct of stats by time
   = record
     today        :: Stat
@@ -43,20 +49,4 @@ stats :: Stats
     last_90_days :: Stat
     all_time     :: Stat
 
-sender :: Sender
-  // A record for the senders that have tried to use this account
-  // both verified and unverified
-  = record 
-    address       :: Email
-    created_at    :: utc
-    sent          :: integer
-    hard_bounces  :: integer
-    soft_bounces  :: integer
-    rejects       :: integer
-    complaints    :: integer
-    unsubs        :: integer
-    opens         :: integer
-    clicks        :: integer
-    unique_opens  :: integer
-    unique_clicks :: integer
 |]

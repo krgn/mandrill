@@ -23,10 +23,10 @@ ping key = do
   let obj = mkObj key
     in performRequest "/users/ping.json" obj
 
-senders :: ApiKey -> IO (Either ApiError [Sender])
+senders :: ApiKey -> IO (Either ApiError [Stat])
 senders key = do
   resp <- performRequest "/users/senders.json" (mkObj key)
   return $ parseResponse resp
 
-mkObj :: String -> LBS.ByteString
+mkObj :: ApiKey -> LBS.ByteString
 mkObj key = encode (object ["key" .= key])
