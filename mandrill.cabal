@@ -57,7 +57,7 @@ library
                      , text
                      , lens
 
-test-suite mandrill-tests
+test-suite spec
   type:                exitcode-stdio-1.0
 
   ghc-options:         -Wall -Werror 

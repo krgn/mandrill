@@ -3,21 +3,41 @@ Mandrill API in Haskell
 
 ## Tests
 
+Configure the project:
+
+```sh
+$ cabal configure --enable-tests
+```
+
 To run tests, either execute
 
-    $ cabal test --show-details=always --test-option=--color
+```sh
+$ cabal test --show-details=always --test-option=--color
+```
 
-or start the repl with the mandrill-tests target like so:
+or start the repl with the `spec` target like so:
 
-    $ cabal repl mandrill-tests
+```sh
+$ cabal repl spec
+```
 
 Then, execute the test suite:
 
-    λ :main
+```sh
+λ :main
+..hack..hack.hack
+λ :reload
+λ :main
+```
 
-    ..hack..hack.hack
+Or, if you like [`guard-haskell`][0], just install and run guard:
 
-    λ :reload
-    λ :main
+```sh
+$ bundle
+$ guard
+```
 
-## Library 
+Caveat: this will only work correctly if you have configured the project with
+`--enable-test` as described above.
+
+    [0]: https://github.com/supki/guard-haskell
