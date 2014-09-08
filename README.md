@@ -1,7 +1,8 @@
 Mandrill API in Haskell
----------------------------
+===========================
 
-## Tests
+Tests
+-----
 
 Configure the project:
 
@@ -40,4 +41,7 @@ $ guard
 Caveat: this will only work correctly if you have configured the project with
 `--enable-test` as described above.
 
-    [0]: https://github.com/supki/guard-haskell
+
+
+
+  [0]: https://github.com/supki/guard-haskell
