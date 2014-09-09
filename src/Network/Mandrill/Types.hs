@@ -18,7 +18,7 @@ import Network.Mandrill.Response
 import Network.Mandrill.TH.Utils
 import Network.Mandrill.TH.Types
 
--- now, splice in all our data type definitions
+-- splice in all our data type definitions
 $(generate utils)
 $(generateAPITools utils [enumTool, jsonTool, mandrillTool])
 

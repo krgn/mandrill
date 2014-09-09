@@ -1,6 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE QuasiQuotes #-}
 
 module Data.API.Tools.Mandrill
@@ -8,15 +6,15 @@ module Data.API.Tools.Mandrill
        , mandrillTool
        ) where
 
-import           Network.Mandrill.Response
-import           Control.Monad (when)
-import           Data.API.JSON
-import           Data.API.Tools.Combinators
-import           Data.API.Tools.Datatypes
-import           Data.API.Types
-import           Data.Monoid
-import           Language.Haskell.TH
-import           Data.Default
+import Network.Mandrill.Response
+import Control.Monad (when)
+import Data.API.JSON
+import Data.API.Tools.Combinators
+import Data.API.Tools.Datatypes
+import Data.API.Types
+import Data.Monoid
+import Language.Haskell.TH
+import Data.Default
 
 mandrillTool :: APITool
 mandrillTool = apiNodeTool $ apiSpecTool
