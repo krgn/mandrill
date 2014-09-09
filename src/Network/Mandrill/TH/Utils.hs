@@ -9,9 +9,71 @@ import Data.API.Types
 utils :: API
 utils = [api|
 
-sbccnt :: Subaccount
+lbl :: Label
+  // a template label
+  = string
+
+sbcntid :: SubaccountId
   // a subaccount 
   = string
+
+athk :: AuthKey
+  // an auth key synonym
+  = string
+  
+tplnm :: TemplateName
+  // type synoym for the name of a template
+  = string
+
+tplcnt :: TemplateContent
+  // type synoym for the name of a template
+  = record
+    name :: TemplateName
+    content :: string
+ 
+exptst :: ExportType
+  // type of an export
+  = enum 
+    | activity
+    | reject
+    | whitelist
+
+exptst :: ExportState 
+  // state of an export
+  = enum 
+    | waiting
+    | working
+    | complete
+    | error
+    | expired 
+
+ss :: SendStatus
+  // The status enum 
+  = enum
+    | sent
+    | queued
+    | bounced
+    | rejected
+    | invalid
+
+rr :: RejectReason
+  // Reason enum when message was rejected
+  = enum
+    | hard_bounce
+    | soft_bounce
+    | spam
+    | unsub
+    | custom
+    | invalid_sender
+    | invalid 
+    | test_mode_limit
+    | rule 
+
+acctst :: AccountStatus
+  // enum for status
+  = enum
+    | active
+    | paused
 
 apiKey :: ApiKey
   // key for api

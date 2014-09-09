@@ -16,24 +16,13 @@ import Data.API.Tools
 import Data.API.Tools.Mandrill
 import Network.Mandrill.ApiError
 import Network.Mandrill.TH.Utils
-import Network.Mandrill.TH.Users
-import Network.Mandrill.TH.Messages
-import Network.Mandrill.TH.Rejects
+import Network.Mandrill.TH.Types
 
 -- now, splice in all our data type definitions
 $(generate utils)
 $(generateAPITools utils
   [enumTool, jsonTool, mandrillTool "ApiError", mandrillListTool "ApiError"])
 
-$(generate users)
-$(generateAPITools users
+$(generate mandrillApi)
+$(generateAPITools mandrillApi
   [enumTool, jsonTool, mandrillTool "ApiError", mandrillListTool "ApiError"])
-
-$(generate messages)
-$(generateAPITools messages
-  [enumTool, jsonTool, mandrillTool "ApiError", mandrillListTool "ApiError"])
-
-$(generate rejectsApi)
-$(generateAPITools rejectsApi
-  [enumTool, jsonTool, mandrillTool "ApiError", mandrillListTool "ApiError"])
-

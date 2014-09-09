@@ -37,9 +37,7 @@ library
   
   -- Modules included in this library but not exported.
   other-modules:       Network.Mandrill.TH.Utils
-                     , Network.Mandrill.TH.Users
-                     , Network.Mandrill.TH.Messages
-                     , Network.Mandrill.TH.Rejects
+                     , Network.Mandrill.TH.Types
                      , Network.Mandrill.Utils
                      , Data.API.Tools.Mandrill
 

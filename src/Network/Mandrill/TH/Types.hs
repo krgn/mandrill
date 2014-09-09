@@ -5,8 +5,8 @@ module Network.Mandrill.TH.Types where
 import Data.API.Parse
 import Data.API.Types
 
-users :: API
-users = [api|
+mandrillApi :: API
+mandrillApi = [api|
 
 usr :: User
   // A record for a user
@@ -102,10 +102,6 @@ trkdmn :: TrackingDomain
     cname :: DomainRecord
     valid_tracking :: boolean
 
-lbl :: Label
-  // a template label
-  = string
-
 tmpl :: Template
   // an email template
   = record 
@@ -127,10 +123,6 @@ tmpl :: Template
     created_at         :: string
     updated_at         :: string
 
-athk :: AuthKey
-  // an auth key synonym
-  = string
-  
 msgevt :: MessageEvent
   // an event in the message lifecycle
   = enum 
@@ -156,12 +148,6 @@ wbhk :: Webhook
     batches_sent :: Count
     events_sent  :: Count
     last_error   :: string
-
-acctst :: AccountStatus
-  // enum for status
-  = enum
-    | active
-    | paused
 
 sbacct :: Subaccount
   // a subaccount
@@ -194,22 +180,6 @@ inrt :: InboundRoute
     email   :: ? Email 
     pattern :: string
     url     :: Url 
-
-exptst :: ExportType
-  // type of an export
-  = enum 
-    | activity
-    | reject
-    | whitelist
-
-exptst :: ExportState 
-  // state of an export
-  = enum 
-    | waiting
-    | working
-    | complete
-    | error
-    | expired 
 
 expt :: Export
   // an export
@@ -283,16 +253,6 @@ rcptmvar :: RecipientMergeVar
     recipient :: Email
     vars      :: [MergeVar] 
 
-tplnm :: TemplateName
-  // type synoym for the name of a template
-  = string
-
-tplcnt :: TemplateContent
-  // type synoym for the name of a template
-  = record
-    name :: TemplateName
-    content :: string
- 
 to :: To
   // a way to encode the possibility of a single or multiple recipient addresses 
   = union
@@ -334,28 +294,6 @@ msg :: Message
     recipient_metadata        :: ? [RecipientMetadata]
     attachments               ::   [Attachment]
     images                    :: ? [Image]
-
-ss :: SendStatus
-  // The status enum 
-  = enum
-    | sent
-    | queued
-    | bounced
-    | rejected
-    | invalid
-
-rr :: RejectReason
-  // Reason enum when message was rejected
-  = enum
-    | hard_bounce
-    | soft_bounce
-    | spam
-    | unsub
-    | custom
-    | invalid_sender
-    | invalid 
-    | test_mode_limit
-    | rule 
 
 srq :: SendRequest
   // the request object sent to send of a new message via the API
