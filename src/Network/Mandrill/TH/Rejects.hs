@@ -18,18 +18,22 @@ rjctrq :: RejectRequest
     include_expired :: ? boolean
 
 rjct :: Reject 
-  // a rejecrt response
+  // a reject
   = record 
     email         :: Email
-    deleted       :: ? boolean
-    reason        :: ? RejectReason
-    detail        :: ? string
-    created_at    :: ? string
-    last_event_at :: ? string
-    expires_at    :: ? string
-    expired       :: ? string 
-    sender        :: ? Stat 
-    subaccount    :: ? Subaccount
-    _added        :: ? boolean
+    reason        :: RejectReason
+    detail        :: string
+    created_at    :: string
+    last_event_at :: string
+    expires_at    :: string
+    expired       :: string 
+    sender        :: Stat 
+    subaccount    :: Subaccount
 
+wht :: Whitelist
+  // a whitelist entry
+  = record 
+    email      :: Email
+    detail     :: string
+    created_at :: string
 |]
