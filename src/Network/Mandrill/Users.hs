@@ -6,10 +6,9 @@ module Network.Mandrill.Users
        , senders) where
 
 import Data.Aeson
-import Network.Mandrill.ApiError
+import Network.Mandrill.Response
 import Network.Mandrill.Types
 import Network.Mandrill.Utils
-import Data.API.Tools.Mandrill
 
 import qualified Data.ByteString.Lazy as LBS
 

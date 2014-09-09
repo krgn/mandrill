@@ -8,7 +8,7 @@ module Data.API.Tools.Mandrill
        , mandrillTool
        ) where
 
-import           Network.Mandrill.ApiError
+import           Network.Mandrill.Response
 import           Control.Monad (when)
 import           Data.API.JSON
 import           Data.API.Tools.Combinators
@@ -17,33 +17,7 @@ import           Data.API.Types
 import           Data.Monoid
 import           Language.Haskell.TH
 import           Data.Default
-import qualified Data.ByteString.Lazy           as LBS
 
-class (FromJSONWithErrs r) => MandrillResponse r where
-  parseResponse :: (FromJSONWithErrs r) => LBS.ByteString -> Either ApiError r
-
--- | copy/paste from private module
-simpleD :: Name -> ExpQ -> Q Dec
-simpleD n e = funD n [clause [] (normalB e) []]
-
--- | copy/paste from private module
-optionalInstanceD :: ToolSettings -> Name -> [TypeQ] -> DecQ -> DecQ -> Q [Dec]
-optionalInstanceD stgs c tqs dq1 dq2 = do
-  ts <- sequence tqs
-  ds1 <- dq1
-  ds2 <- dq2
-  exists <- isInstance c ts
-  if exists then do
-    when (warnOnOmittedInstance stgs) $ reportWarning $ msg ts
-    return []
-  else 
-    return [
-      InstanceD [] (AppT (ConT c) (head ts)) [ds1],
-      InstanceD [] (AppT (ConT c) (AppT ListT (last ts))) [ds2]
-      ]
-  where
-  msg ts = "instance " ++ pprint c ++ " " ++ pprint ts ++ " already exists, so it was not generated"
-	
 mandrillTool :: APITool
 mandrillTool = apiNodeTool $ apiSpecTool
   gen_sn_ex    
@@ -71,6 +45,26 @@ mkInst ts an e1 e2 =
     [nodeRepT an]
     (simpleD 'parseResponse e1)
     (simpleD 'parseResponse e2)
+
+optionalInstanceD :: ToolSettings -> Name -> [TypeQ] -> DecQ -> DecQ -> Q [Dec]
+optionalInstanceD stgs c tqs dq1 dq2 = do
+  ts <- sequence tqs
+  ds1 <- dq1
+  ds2 <- dq2
+  exists <- isInstance c ts
+  if exists then do
+    when (warnOnOmittedInstance stgs) $ reportWarning $ msg ts
+    return []
+  else 
+    return [
+        InstanceD [] (AppT (ConT c) (head ts)) [ds1],
+        InstanceD [] (AppT (ConT c) (AppT ListT (last ts))) [ds2]
+      ]
+  where
+  msg ts = "instance " ++ pprint c ++ " " ++ pprint ts ++ " already exists, so it was not generated"
+	
+simpleD :: Name -> ExpQ -> Q Dec
+simpleD n e = funD n [clause [] (normalB e) []]
 
 expCon :: APINode -> ExpQ
 expCon an = [e| \resp ->

@@ -2,7 +2,7 @@
 
 module Network.Mandrill.Urls where
 
-import Network.Mandrill.ApiError
+import Network.Mandrill.Response
 import Network.Mandrill.Types
 
 list :: ApiKey -> Either ApiError ()

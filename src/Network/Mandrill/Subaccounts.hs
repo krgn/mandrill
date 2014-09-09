@@ -2,7 +2,7 @@
 
 module Network.Mandrill.Subaccounts where
 
-import Network.Mandrill.ApiError
+import Network.Mandrill.Response
 import Network.Mandrill.Types
 
 add :: ApiKey -> Either ApiError ()

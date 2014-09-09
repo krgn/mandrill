@@ -1,11 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Network.Mandrill.ApiError where
+module Network.Mandrill.Response where
 
 import Data.Aeson
 import Data.API.JSON
 import Data.Default
 import Control.Applicative
 import Control.Monad
+import Data.ByteString.Lazy
+
+class (FromJSONWithErrs r) => MandrillResponse r where
+  parseResponse :: (FromJSONWithErrs r) => ByteString -> Either ApiError r
 
 -- | We don't generate this type like the others, as we'll need
 -- it to parameterize our template splices with it and its instances

@@ -2,7 +2,7 @@
 
 module Network.Mandrill.Exports where
 
-import Network.Mandrill.ApiError
+import Network.Mandrill.Response
 import Network.Mandrill.Types
 
 

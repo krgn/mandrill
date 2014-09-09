@@ -7,14 +7,14 @@
 
 module Network.Mandrill.Types 
   ( module Network.Mandrill.Types
-  , module Network.Mandrill.ApiError
+  , module Network.Mandrill.Response
   , module Data.API.JSON
   ) where
 
 import Data.API.JSON
 import Data.API.Tools
 import Data.API.Tools.Mandrill
-import Network.Mandrill.ApiError
+import Network.Mandrill.Response
 import Network.Mandrill.TH.Utils
 import Network.Mandrill.TH.Types
 
