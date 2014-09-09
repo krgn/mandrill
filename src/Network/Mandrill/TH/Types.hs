@@ -123,18 +123,6 @@ tmpl :: Template
     created_at         :: string
     updated_at         :: string
 
-msgevt :: MessageEvent
-  // an event in the message lifecycle
-  = enum 
-    | send
-    | hard_bounce
-    | soft_bounce
-    | open
-    | click
-    | spam
-    | unsub
-    | reject
-
 wbhk :: Webhook
   // a webhook
   = record 

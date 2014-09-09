@@ -28,7 +28,7 @@ tplnm :: TemplateName
 tplcnt :: TemplateContent
   // type synoym for the name of a template
   = record
-    name :: TemplateName
+    name    :: TemplateName
     content :: string
  
 exptst :: ExportType
@@ -37,6 +37,18 @@ exptst :: ExportType
     | activity
     | reject
     | whitelist
+
+msgevt :: MessageEvent
+  // an event in the message lifecycle
+  = enum 
+    | send
+    | hard_bounce
+    | soft_bounce
+    | open
+    | click
+    | spam
+    | unsub
+    | reject
 
 exptst :: ExportState 
   // state of an export
