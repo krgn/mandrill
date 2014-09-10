@@ -66,7 +66,7 @@ sndr :: Sender
     unique_clicks :: Count
     stats         :: ? Stats
 
-dr :: DomainRecord
+dr :: Record
   // spf or dkim record info of a Domain
   = record
     valid       :: boolean
@@ -79,10 +79,16 @@ dmn :: Domain
     domain         :: Url
     created_at     :: string
     last_tested_at :: string
-    spf            :: DomainRecord
-    dkim           :: DomainRecord
+    spf            :: Record
+    dkim           :: Record
     verified_at    :: string
     valid_signing  :: boolean 
+
+dmnst :: DomainState
+  = record 
+    status :: DomainStatus
+    domain :: Name
+    email  :: Email
 
 urlRec :: UrlRecord 
   // an url record with click stats
@@ -179,15 +185,6 @@ expt :: Export
     type        :: ExportType
     state       :: ExportState
     result_url  :: ? Url
-
-rjctrq :: RejectRequest
-  // a reject request
-  = record 
-    key             :: ApiKey
-    email           :: Email
-    comment         :: string
-    subaccount      :: Subaccount      
-    include_expired :: ? boolean
 
 rjct :: Reject 
   // a reject

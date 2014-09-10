@@ -4,12 +4,27 @@ module Network.Mandrill.Whitelists where
 
 import Network.Mandrill.Response
 import Network.Mandrill.Types
+import Network.Mandrill.Utils
 
-add :: ApiKey -> Either ApiError ()
-add _ = undefined
+add :: ApiKey -> 
+      Email -> 
+      Comment -> 
+      IO (Either ApiError Whitelist)
+add k e c = do
+    resp <- performRequest "/whitelists/add.json" mkObj
+    return $ parseResponse resp
+    where mkObj = encode $ object [ "key"     .= k 
+                                  , "email"   .= e 
+                                  , "comment" .= c]
 
-list :: ApiKey -> Either ApiError ()
-list _ = undefined
+list :: ApiKey -> Email -> IO (Either ApiError Whitelist)
+list k e = do
+     resp <- performRequest "/whitelists/list.json" mkObj
+     return $ parseResponse resp
+     where mkObj = encode $ object ["key" .= k, "email" .= e]
 
-delete :: ApiKey -> Either ApiError ()
-delete _ = undefined
+delete :: ApiKey -> Email -> IO (Either ApiError Whitelist) 
+delete k e = do
+       resp <- performRequest "/whitelists/delete.json" mkObj
+       return $ parseResponse resp
+       where mkObj = encode $ object ["key" .= k, "email" .= e]

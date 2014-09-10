@@ -33,6 +33,14 @@ qry :: Query
   // a query
   = string
 
+cmt :: Comment
+  // a comment
+  = string
+
+inexp :: IncExpired 
+  // a flag
+  = boolean
+
 lbl :: Label
   // a template label
   = string
@@ -66,7 +74,15 @@ tplcnt :: TemplateContent
   = record
     name    :: TemplateName
     content :: string
- 
+
+dmnst :: DomainStatus
+  = enum
+    | sent
+    | already_verified
+
+mlbx :: Mailbox
+  = string
+
 exptst :: ExportType
   // type of an export
   = enum 

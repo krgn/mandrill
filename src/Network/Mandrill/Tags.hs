@@ -4,18 +4,40 @@ module Network.Mandrill.Tags where
 
 import Network.Mandrill.Response
 import Network.Mandrill.Types
+import Network.Mandrill.Utils
 
-allTimeSeries :: ApiKey -> IO (Either ApiError ())
-allTimeSeries _ = undefined
+list :: ApiKey -> IO (Either ApiError [Stat])
+list key = do
+     resp <- performRequest "/tags/list.json" mkObj
+     return $ parseResponse resp
+     where mkObj = encode $ object [ "key" .= key ]
 
-timeSeries :: ApiKey -> IO (Either ApiError ())
-timeSeries _ = undefined
+info :: ApiKey -> 
+       Tag ->
+       IO (Either ApiError Stat)
+info key tag  = do
+     resp <- performRequest "/tags/info.json" mkObj
+     return $ parseResponse resp
+     where mkObj = encode $
+                   object [ "key" .= key
+                          , "tag" .= tag ]
 
-list :: ApiKey -> IO (Either ApiError [Tag])
-list _ = undefined
+delete :: ApiKey -> Tag -> IO (Either ApiError Stat)
+delete key tag = do
+       resp <- performRequest "/tags/delete.json" mkObj
+       return $ parseResponse resp
+       where mkObj = encode $ object [ "key" .= key
+                                     , "tag" .= tag ]
 
-info :: ApiKey -> IO (Either ApiError Tag)
-info _ = undefined
+timeSeries :: ApiKey -> Tag -> IO (Either ApiError Stat)
+timeSeries key tag = do
+           resp <- performRequest "/tags/time-series.json" mkObj
+           return $ parseResponse resp
+           where mkObj = encode $ object [ "key" .= key
+                                         , "tag" .= tag ]
 
-delete :: ApiKey -> IO (Either ApiError ())
-delete _ = undefined
+allTimeSeries :: ApiKey -> IO (Either ApiError Stat)
+allTimeSeries key = do
+              resp <- performRequest "/tags/time-series.json" mkObj
+              return $ parseResponse resp
+              where mkObj = encode $ object [ "key" .= key ]
