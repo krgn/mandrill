@@ -9,12 +9,48 @@ import Data.API.Types
 utils :: API
 utils = [api|
 
+asnc :: Async
+  // type synonym for async sending
+  = boolean
+
+ippool :: IpPool
+  // a template label
+  = string
+
+sndat :: SendAt
+  // date alias
+  = string
+
+frm :: From
+  // a date
+  = string
+
+thr :: Thru
+  // a date
+  = string
+
+qry :: Query
+  // a query
+  = string
+
 lbl :: Label
   // a template label
   = string
 
+rawmsg :: RawMessage
+  // a raw message string
+  = string
+
+sched :: ScheduledId
+  // a scheduled id
+  = string
+
 sbcntid :: SubaccountId
   // a subaccount 
+  = string
+
+nm :: Name 
+  // alias for name of soemthigng
   = string
 
 athk :: AuthKey
@@ -99,7 +135,7 @@ email :: Email
   // Type synonym for email addresses
   = string
 
-recipient :: Recipient
+rcpt :: Recipient
   // A recipient with data
   = record
     email :: Email

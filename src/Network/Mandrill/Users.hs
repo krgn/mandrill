@@ -18,7 +18,7 @@ info key = do
   return $ parseResponse resp
 
 ping :: ApiKey -> IO LBS.ByteString
-ping key = do
+ping key =
   let obj = mkObj key
     in performRequest "/users/ping.json" obj
 

@@ -26,7 +26,7 @@ stat :: Stat
     tag           :: ? Tag
     reputation    :: ? Count
     address       :: ? Email
-    created_at    :: ? utc
+    created_at    :: ? string
     sent          :: Count
     hard_bounces  :: Count
     soft_bounces  :: Count
@@ -105,23 +105,24 @@ trkdmn :: TrackingDomain
 tmpl :: Template
   // an email template
   = record 
-    slug               :: string 
-    name               :: string
-    labels             :: [Label]
-    code               :: string
-    subject            :: string
-    from_email         :: Email
-    from_name          :: string
-    text               :: string 
-    publish_name       :: string
-    publish_code       :: string
-    publish_subject    :: string
-    publish_from_email :: Email
-    publish_from_name  :: string
-    publish_text       :: string
-    published_at       :: string
-    created_at         :: string
-    updated_at         :: string
+    slug               :: ? string 
+    name               ::   string
+    labels             :: ? [Label]
+    code               :: ? string
+    subject            :: ? string
+    from_email         :: ? Email
+    from_name          :: ? string
+    text               :: ? string 
+    publish_name       :: ? string
+    publish_code       :: ? string
+    publish_subject    :: ? string
+    publish_from_email :: ? Email
+    publish_from_name  :: ? string
+    publish_text       :: ? string
+    published_at       :: ? string
+    content            :: ? string
+    created_at         :: ? string
+    updated_at         :: ? string
 
 wbhk :: Webhook
   // a webhook
@@ -247,6 +248,13 @@ to :: To
     | single   :: Recipient
     | multiple :: [Recipient]
 
+cnf :: MessageConfig
+  // config
+  = record 
+    async   :: Async
+    ip_pool :: IpPool
+    send_at :: SendAt 
+
 msg :: Message
   // A message structure
   = record 
@@ -283,36 +291,13 @@ msg :: Message
     attachments               ::   [Attachment]
     images                    :: ? [Image]
 
-srq :: SendRequest
-  // the request object sent to send of a new message via the API
-  = record
-    key              ::   ApiKey
-    template_name    :: ? TemplateName
-    template_content :: ? [TemplateContent]
-    message          ::   Message
-    async            ::   boolean
-    ip_pool          ::   string
-    send_at          ::   string    
-
-srsp :: SendResponse
+srsp :: DeliveryStatus
   // The response object when sending messages
   = record
-    email         :: Email
-    status        :: SendStatus
-    reject_reason :: RejectReason
-    _id           :: MessageId
-
-srchrq :: SearchRequest
-  // request to search for message sent via the API
-  = record
-    key       :: ApiKey
-    query     :: string
-    date_from :: string
-    date_to   :: string
-    tags      :: [Tag]
-    senders   :: [Email]
-    api_keys  :: [ApiKey]
-    limit     :: Count
+    email         ::   Email
+    status        ::   SendStatus
+    reject_reason :: ? RejectReason
+    _id           ::   MessageId
 
 srchrsp :: SearchResult
   // result type for search requests

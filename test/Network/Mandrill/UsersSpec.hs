@@ -41,5 +41,5 @@ test_senders =
     it "should return a list of sender that have used this account" $ do
       response <- Users.senders key
       case response of
-        Left  e -> status e `shouldBe` "error"
-        Right v -> length v `shouldBe` 1 
+        Left  e -> status e     `shouldBe` "error"
+        Right v -> length v == 0 `shouldBe` True
