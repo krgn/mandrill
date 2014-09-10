@@ -2,9 +2,7 @@
 {-# LANGUAGE QuasiQuotes #-}
 
 module Data.API.Tools.Mandrill
-       ( MandrillResponse(..)
-       , mandrillTool
-       ) where
+       ( mandrillTool ) where
 
 import Network.Mandrill.Response
 import Control.Monad (when)
