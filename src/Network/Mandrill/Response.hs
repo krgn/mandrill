@@ -23,10 +23,10 @@ data ApiError = ApiError {
 
 instance Default ApiError where
   def = ApiError {
-      status  = "crazyerror",
-      code    = 666,
-      name    = "Crazy_ErR0r",
-      message = "something truly crazy happened"
+      status  = "error",
+      code    = 3000,
+      name    = "HS_Mandrill_Package_JSON_Parse_Error",
+      message = ""
     }
 
 instance FromJSON ApiError where

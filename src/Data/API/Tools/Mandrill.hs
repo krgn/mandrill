@@ -69,7 +69,7 @@ expCon an = [e| \resp ->
    Left  _ ->
      case decodeWithErrs resp :: Either [(JSONError, Position)] ApiError of
       Right e -> Left e
-      Left  _ -> Left def
+      Left  p -> Left def { message = show p }
   |]
 
 expLCon :: APINode -> ExpQ
@@ -79,5 +79,5 @@ expLCon an = [e| \resp ->
    Left  _ ->
      case decodeWithErrs resp :: Either [(JSONError, Position)] ApiError of
       Right e -> Left e
-      Left  _ -> Left def
+      Left  p -> Left def { message = show p }
   |]
