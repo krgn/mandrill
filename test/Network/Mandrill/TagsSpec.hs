@@ -61,7 +61,7 @@ test_allTimeSeries :: Spec
 test_allTimeSeries = 
   describe "/tags/all-time-series.json" $
     it "should return stats for all tags" $ do
-    raw <- getEnv "MANDRILL_API_KEY"
-       let key = ApiKey { _ApiKey =  Text.pack raw }
-       resp <- Tags.timeSeries key "hello"
-       resp `shouldSatisfy` isRight
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Tags.timeSeries key "hello"
+      resp `shouldSatisfy` isRight

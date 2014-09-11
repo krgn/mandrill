@@ -10,10 +10,10 @@ import Network.Mandrill.Utils
 -- manually will never expire and there is no reputation penalty for removing 
 -- them from your blacklist. Attempting to blacklist an address that 
 -- has been whitelisted will have no effect.
-add :: ApiKey     -> 
-      Email      -> 
-      Comment    -> 
-      Subaccount ->  
+add :: ApiKey       -> 
+      Email        -> 
+      Comment      -> 
+      SubaccountId ->  
       IO (Either ApiError Reject)
 add k e c a =
     performRequest "/rejects/add.json" $
@@ -26,10 +26,10 @@ add k e c a =
 -- address to limit the results. Returns up to 1000 results. By default, 
 -- entries that have expired are excluded from the results; set 
 -- `IncExpired` to true to include them.
-list :: ApiKey     -> 
-       Email      -> 
-       IncExpired -> 
-       Subaccount -> 
+list :: ApiKey       -> 
+       Email        -> 
+       IncExpired   -> 
+       SubaccountId -> 
        IO (Either ApiError Reject)
 list k e i s =
      performRequest "/rejects/list.json" $
@@ -41,9 +41,9 @@ list k e i s =
 -- | Deletes an email rejection. There is no limit to how many rejections 
 -- you can remove from your blacklist, but keep in mind that each deletion 
 -- has an affect on your reputation.
-delete :: ApiKey     -> 
-         Email      -> 
-         Subaccount -> 
+delete :: ApiKey       -> 
+         Email        -> 
+         SubaccountId -> 
          IO (Either ApiError Reject)
 delete k e s =
        performRequest "/rejects/delete.json" $

@@ -178,7 +178,7 @@ tmpl :: Template
 hook :: Webhook
   // a webhook
   = record 
-    id           :: ? integer
+    id           :: ? HookId
     url          :: Url
     description  :: Description
     auth_key     :: AuthKey

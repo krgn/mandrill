@@ -1,11 +1,13 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Network.Mandrill.TemplatesSpec where
 
 import Test.Hspec
-
--- import Network.Mandrill.Templates
-
-key :: String
-key = "b0c5wPDu1J9q_7MqPYAqBg"
+import Test.Hspec.Expectations.Contrib
+import           Network.Mandrill.Types
+import qualified Data.Text                  as Text 
+import qualified Network.Mandrill.Templates as Templates
+import           System.Environment
 
 spec :: Spec
 spec = do
@@ -21,55 +23,71 @@ spec = do
 test_add :: Spec
 test_add = 
   describe "/templates/add.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should add the template" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.add key def False
+      resp `shouldSatisfy` isRight
 
 test_timeSeries :: Spec
 test_timeSeries = 
   describe "/templates/time-series.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should return some stats for a template" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.timeSeries key "hello"
+      resp `shouldSatisfy` isRight
 
 test_render :: Spec
 test_render = 
   describe "/templates/render.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should render a template to html" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.render key "hello" [] []
+      resp `shouldSatisfy` isRight
 
 test_delete :: Spec
 test_delete = 
   describe "/templates/delete.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should delete a template" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.delete key "hello"
+      resp `shouldSatisfy` isRight
 
 test_publish :: Spec
 test_publish = 
   describe "/templates/publish.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should publish a template" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.publish key "hello"
+      resp `shouldSatisfy` isRight
 
 test_update :: Spec
 test_update = 
   describe "/templates/update.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should update a template" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.publish key "hello"
+      resp `shouldSatisfy` isRight
 
 test_info :: Spec
 test_info = 
   describe "/templates/info.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should return some info about a template" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.info key "hello"
+      resp `shouldSatisfy` isRight
 
 test_list :: Spec
 test_list = 
   describe "/templates/list.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should list all templates" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+      resp <- Templates.list key "bye"
+      resp `shouldSatisfy` isRight
