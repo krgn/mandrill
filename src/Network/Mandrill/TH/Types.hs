@@ -66,6 +66,12 @@ sndr :: Sender
     unique_clicks :: Count
     stats         :: ? Stats
 
+mtdt :: Metadata
+  = record
+    name          :: Name 
+    state         :: MetadataState
+    view_template :: string
+
 dr :: Record
   // spf or dkim record info of a Domain
   = record

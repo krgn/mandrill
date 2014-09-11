@@ -32,7 +32,6 @@ asnc :: Async
   // type synonym for async sending
   = boolean
 
-
 sndat :: SendAt
   // date alias
   = string
@@ -179,6 +178,13 @@ rr :: RejectReason
     | invalid 
     | test_mode_limit
     | rule 
+
+mtst :: MetadataState
+  // enum for status
+  = enum
+    | active
+    | delete
+    | index
 
 acctst :: AccountStatus
   // enum for status
