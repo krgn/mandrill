@@ -102,10 +102,10 @@ urlRec :: UrlRecord
 trkdmn :: TrackingDomain 
   // a tracking domain
   = record 
-    domain :: Url 
-    created_at :: string
+    domain         :: Url 
+    created_at     :: string
     last_tested_at :: string
-    cname :: DomainRecord
+    cname          :: Record
     valid_tracking :: boolean
 
 tmpl :: Template
@@ -302,7 +302,7 @@ srchrsp :: SearchResult
     ts            ::   utc
     _id           ::   MessageId
     sender        ::   Email
-    template      ::   TemplateName
+    template      ::   Name
     subject       ::   string
     email         ::   Email
     tags          ::   [Tag]

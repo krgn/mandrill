@@ -21,18 +21,18 @@ send k m c = do
                        , "send_at" .= _cnf_send_at c ]
 
 
-sendTmpl :: ApiKey            -> 
-           Message           -> 
-           MessageConfig     -> 
-           Template          -> 
-           [TemplateContent] -> 
+sendTmpl :: ApiKey         -> 
+           Message        -> 
+           MessageConfig  -> 
+           Name           -> 
+           [Content]      -> 
            IO (Either ApiError [DeliveryStatus])
 sendTmpl k m c t tc = do
          resp <- performRequest "/messages/send-template.json" mkObj
          return $ parseResponse resp
   where mkObj = encode $
                 object [ "key"              .= k
-                       , "template_name"    .= _tmpl_name    t 
+                       , "template_name"    .= t
                        , "template_content" .= tc
                        , "message"          .= m
                        , "ip_pool"          .= _cnf_ip_pool  c

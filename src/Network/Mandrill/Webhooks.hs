@@ -4,6 +4,7 @@ module Network.Mandrill.Webhooks where
 
 import Network.Mandrill.Response
 import Network.Mandrill.Types
+import Network.Mandrill.Utils
 
 add :: ApiKey -> Either ApiError ()
 add _ = undefined

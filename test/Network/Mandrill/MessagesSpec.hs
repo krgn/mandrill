@@ -69,7 +69,7 @@ test_sendTemplate =
                                , _cnf_ip_pool = Text.pack ""
                                , _cnf_send_at = Text.pack "" }
 
-           tmpl = def { _tmpl_name = Text.pack "test" } :: Template
+           tmpl = Text.pack "test"
 
        response <- Messages.sendTmpl key msg cfg tmpl []
        case response of

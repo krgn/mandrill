@@ -4,21 +4,41 @@ module Network.Mandrill.Urls where
 
 import Network.Mandrill.Response
 import Network.Mandrill.Types
+import Network.Mandrill.Utils
 
-list :: ApiKey -> Either ApiError ()
-list _ = undefined
+list :: ApiKey -> IO (Either ApiError [UrlRecord])
+list k = do 
+     resp <- performRequest "/urls/list.json" mkObj
+     return $ parseResponse resp
+     where mkObj = encode $ object [ "key" .= k ]
 
-search :: ApiKey -> Either ApiError ()
-search _ = undefined
+search :: ApiKey -> Query -> IO (Either ApiError [UrlRecord])
+search k q = do 
+       resp <- performRequest "/urls/search.json" mkObj
+       return $ parseResponse resp
+       where mkObj = encode $ object [ "key" .= k, "q" .= q ]
 
-timeSeries :: ApiKey -> Either ApiError ()
-timeSeries _ = undefined
+timeSeries :: ApiKey -> Url -> IO (Either ApiError [Stat])
+timeSeries k u = do
+           resp <- performRequest "/urls/time-series.json" mkObj
+           return $ parseResponse resp
+           where mkObj = encode $ object [ "key" .= k, "url" .= u ]
 
-trackingDomains :: ApiKey -> Either ApiError ()
-trackingDomains _ = undefined
 
-addTrackingDomain :: ApiKey -> Either ApiError ()
-addTrackingDomain _ = undefined
+trackingDomains :: ApiKey -> IO (Either ApiError [TrackingDomain])
+trackingDomains k = do
+                resp <- performRequest "/urls/tracking-domains.json" mkObj
+                return $ parseResponse resp
+                where mkObj = encode $ object [ "key" .= k ]
 
-checkTrackingDomain :: ApiKey -> Either ApiError ()
-checkTrackingDomain _ = undefined
+addTrackingDomain :: ApiKey -> Url -> IO (Either ApiError TrackingDomain)
+addTrackingDomain k d = do
+                  resp <- performRequest "/ursl/add-tracking-domain.json" mkObj
+                  return $ parseResponse resp
+                  where mkObj = encode $ object [ "key" .= k, "domain" .= d ]
+
+checkTrackingDomain :: ApiKey -> Url -> IO (Either ApiError TrackingDomain)
+checkTrackingDomain k d = do
+                  resp <- performRequest "/ursl/add-tracking-domain.json" mkObj
+                  return $ parseResponse resp
+                  where mkObj = encode $ object [ "key" .= k, "domain" .= d ]

@@ -9,6 +9,25 @@ import Data.API.Types
 utils :: API
 utils = [api|
 
+cnt :: Count
+  // a type alias for a count
+  = integer
+
+url :: Url
+  // a type alias for an Url
+  = string
+  
+ip :: IpAddress
+  // a type alias for ip addresses
+  = string
+
+msgid :: MessageId
+  // a type alias for message Ids
+  = string
+
+pblsh :: Publish 
+  = boolean
+
 asnc :: Async
   // type synonym for async sending
   = boolean
@@ -64,24 +83,24 @@ nm :: Name
 athk :: AuthKey
   // an auth key synonym
   = string
-  
-tplnm :: TemplateName
-  // type synoym for the name of a template
+
+mlbx :: Mailbox
   = string
 
-tplcnt :: TemplateContent
+htmlfrg :: HtmlFragment 
+  = record
+    html :: string
+
+tplcnt :: Content
   // type synoym for the name of a template
   = record
-    name    :: TemplateName
+    name    :: Name
     content :: string
 
 dmnst :: DomainStatus
   = enum
     | sent
     | already_verified
-
-mlbx :: Mailbox
-  = string
 
 exptst :: ExportType
   // type of an export
@@ -178,21 +197,5 @@ attachment :: Attachment
     mimeType :: string
     name     :: string
     content  :: string
-
-cnt :: Count
-  // a type alias for a count
-  = integer
-
-url :: Url
-  // a type alias for an Url
-  = string
-  
-ip :: IpAddress
-  // a type alias for ip addresses
-  = string
-
-msgid :: MessageId
-  // a type alias for message Ids
-  = string
 
 |]
