@@ -11,7 +11,7 @@ import Data.ByteString.Lazy
 class (FromJSONWithErrs r) => MandrillResponse r where
   parseResponse :: (FromJSONWithErrs r) => ByteString -> Either ApiError r
 
--- | We don't generate this type like the others, as we'll need
+-- | We don't generate using api-tools this type like the others, as we'll need
 -- it to parameterize our template splices with it and its instances
 data ApiError = ApiError {
       status  :: String,
@@ -21,6 +21,8 @@ data ApiError = ApiError {
     }
     deriving (Show)
 
+-- | Default ApiError used in the MandrillResponse when returned JSON structure 
+-- cannot be parsed.
 instance Default ApiError where
   def = ApiError {
       status  = "error",

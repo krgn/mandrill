@@ -14,7 +14,7 @@ list k =
 
 
 -- | Returns the sender domains that have been added to this account.
-domains :: ApiKey -> IO (Either ApiError [Domain])
+domains :: ApiKey -> IO (Either ApiError [DomainRecord])
 domains k =
         performRequest "/senders/domains.json" $
           object [ "key" .= k ]
@@ -23,7 +23,7 @@ domains k =
 -- | Adds a sender domain to your account. Sender domains are added 
 -- automatically as you send, but you can use this call to add them ahead 
 -- of time.
-addDomain :: ApiKey -> Name -> IO (Either ApiError Domain)
+addDomain :: ApiKey -> Name -> IO (Either ApiError DomainRecord)
 addDomain k n =
           performRequest "/senders/add-domain.json" $
             object [ "key" .= k, "domain" .= n ]
@@ -31,7 +31,7 @@ addDomain k n =
 
 -- | Checks the SPF and DKIM settings for a domain. If you haven't already 
 -- added this domain to your account, it will be added automatically.
-checkDomain :: ApiKey -> Name -> IO (Either ApiError Domain)
+checkDomain :: ApiKey -> Name -> IO (Either ApiError DomainRecord)
 checkDomain k n = 
             performRequest "/senders/check-domain.json" $
               object [ "key" .= k, "domain" .= n ]

@@ -9,6 +9,7 @@ mandrillApi :: API
 mandrillApi = [api|
 
 usr :: User
+
   // A record for a user
   = record 
     username     :: string
@@ -39,7 +40,7 @@ stat :: Stat
     unique_clicks :: Count
     stats         :: ? Stats
 
-usrstats :: Stats
+stats :: Stats
   // A struct of stats by time
   = record
     today        :: Stat
@@ -49,7 +50,7 @@ usrstats :: Stats
     last_90_days :: Stat
     all_time     :: Stat
 
-sndr :: Sender
+sender :: Sender
   // a stats record 
   = record 
     address       :: Email
@@ -66,20 +67,20 @@ sndr :: Sender
     unique_clicks :: Count
     stats         :: ? Stats
 
-mtdt :: Metadata
+metadata :: Metadata
   = record
     name          :: Name 
     state         :: MetadataState
     view_template :: string
 
-dr :: Record
-  // spf or dkim record info of a Domain
+rec :: Record
+  // spf or dkim record info of a DomainRecord
   = record
     valid       :: boolean
     valid_after :: string
     error       :: string
 
-dmn :: Domain
+domrec :: DomainRecord
   // a domain
   = record
     domain         :: Url
@@ -90,13 +91,13 @@ dmn :: Domain
     verified_at    :: string
     valid_signing  :: boolean 
 
-dmnst :: DomainState
+domstate :: DomainState
   = record 
     status :: DomainStatus
     domain :: Name
     email  :: Email
 
-urlRec :: UrlRecord 
+url :: UrlRecord 
   // an url record with click stats
   = record 
     url           :: ? Url
@@ -112,14 +113,14 @@ dnsinfo :: DnsInfo
     valid   :: ? boolean
     error   :: ? string
 
-wrmup :: Warmup
+warmup :: Warmup
   // warmup
   = record
     warming_up :: boolean
     start_at   :: string
     end_at     :: string
 
-iprec :: IpRecord
+ip :: IpRecord
   // an ip record 
   = record
     ip         :: IpAddress
@@ -130,7 +131,7 @@ iprec :: IpRecord
     warmup     :: ? Warmup
     deleted    :: ? boolean
 
-ippool :: IpPool
+pool :: IpPool
   // a ip pool  record
   = record
     name       :: Name
@@ -138,13 +139,12 @@ ippool :: IpPool
     ips        :: ? [IpRecord]
     deleted    :: ? boolean
 
-
-prov :: IpProvision
+provisioning :: IpProvision
   // a provisioning
   = record
     requested_at :: string
 
-trkdmn :: TrackingDomain 
+trackdom :: TrackingDomain 
   // a tracking domain
   = record 
     domain         :: Url 
@@ -175,7 +175,7 @@ tmpl :: Template
     created_at         :: ? string
     updated_at         :: ? string
 
-wbhk :: Webhook
+hook :: Webhook
   // a webhook
   = record 
     id           :: ? integer
@@ -189,7 +189,7 @@ wbhk :: Webhook
     events_sent  :: Count
     last_error   :: string
 
-sbacct :: Subaccount
+acc  :: Subaccount
   // a subaccount
   = record
     id            :: ? SubaccountId
@@ -213,7 +213,7 @@ indom :: InboundDomain
     created_at :: string
     valid_mx   :: boolean
 
-inrt :: InboundRoute
+inroute :: InboundRoute
   // an inbound route
   = record 
     id      :: RouteId
@@ -221,7 +221,7 @@ inrt :: InboundRoute
     pattern :: Pattern
     url     :: Url 
 
-expt :: Export
+export :: Export
   // an export
   = record 
     id          :: ExportId
@@ -231,7 +231,7 @@ expt :: Export
     state       :: ExportState
     result_url  :: ? Url
 
-rjct :: Reject 
+reject :: Reject 
   // a reject
   = record 
     email         :: Email
@@ -244,14 +244,14 @@ rjct :: Reject
     sender        :: Stat 
     subaccount    :: Subaccount
 
-wht :: Whitelist
+whitelist :: Whitelist
   // a whitelist entry
   = record 
     email      :: Email
     detail     :: string
     created_at :: string
 
-dtl :: Detail
+detail :: Detail
   // A stat containing information how often a messsage has been opened or stuff 
   // was clicked.
   = record 
@@ -261,12 +261,12 @@ dtl :: Detail
     location :: string
     ua       :: string
 
-msgmta :: MessageMetadata 
+md :: MessageMetadata 
   // Message metadata
   = record 
     website :: string
 
-rcptmeta :: RecipientMetadata
+rmd :: RecipientMetadata
   // per recipient metadata 
   = record
     rcpt   :: Email
@@ -278,7 +278,7 @@ mvar :: MergeVar
     name    :: string
     content :: string
 
-rcptmvar :: RecipientMergeVar
+rmvar :: RecipientMergeVar
   // bla
   = record
     recipient :: Email
@@ -290,7 +290,7 @@ to :: To
     | single   :: Recipient
     | multiple :: [Recipient]
 
-cnf :: MessageConfig
+conf :: MessageConfig
   // config
   = record 
     async   :: Async
@@ -333,7 +333,7 @@ msg :: Message
     attachments               ::   [Attachment]
     images                    :: ? [Image]
 
-srsp :: DeliveryStatus
+delstate :: DeliveryStatus
   // The response object when sending messages
   = record
     email         ::   Email
@@ -341,7 +341,7 @@ srsp :: DeliveryStatus
     reject_reason :: ? RejectReason
     _id           ::   MessageId
 
-srchrsp :: SearchResult
+result :: SearchResult
   // result type for search requests
   = record 
     ts            ::   utc
@@ -359,25 +359,12 @@ srchrsp :: SearchResult
     metadata      ::   MessageMetadata
     smtp_events   :: ? [SmtpEvent]
 
-smtpev :: SmtpEvent
+event :: SmtpEvent
   // an event in the history of the message
   = record 
     ts   :: utc
     type :: string
     diag :: string
-
-rawrq :: RawRequest
-  // send a raw request 
-  = record 
-    key                ::   ApiKey
-    raw_message        ::   string
-    from_email         :: ? Email
-    from_name          :: ? string
-    to                 :: ? [Email]
-    async              ::   boolean
-    ip_pool            ::   string
-    send_at            ::   string
-    return_path_domain ::   string
 
 sched :: Scheduled
   // a scheduled message

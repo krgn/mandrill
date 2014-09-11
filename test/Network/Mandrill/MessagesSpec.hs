@@ -41,9 +41,9 @@ test_send =
                      } :: Message
 
            cfg = MessageConfig {
-                   _cnf_async   = False
-                 , _cnf_ip_pool = Text.pack ""
-                 , _cnf_send_at = Text.pack ""
+                   _conf_async   = False
+                 , _conf_ip_pool = Text.pack ""
+                 , _conf_send_at = Text.pack ""
                  }
 
        response <- Messages.send key msg cfg
@@ -65,9 +65,9 @@ test_sendTemplate =
                      , _msg_subject = Text.pack "test"
                      } :: Message
 
-           cfg = MessageConfig { _cnf_async   = False
-                               , _cnf_ip_pool = Text.pack ""
-                               , _cnf_send_at = Text.pack "" }
+           cfg = MessageConfig { _conf_async   = False
+                               , _conf_ip_pool = Text.pack ""
+                               , _conf_send_at = Text.pack "" }
 
            tmpl = Text.pack "test"
 

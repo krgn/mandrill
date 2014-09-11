@@ -15,9 +15,9 @@ send k m c =
      performRequest "/messages/send.json" $
         object [ "key"     .= k
                , "message" .= m 
-               , "ip_pool" .= _cnf_ip_pool c
-               , "async"   .= _cnf_async   c 
-               , "send_at" .= _cnf_send_at c ]
+               , "ip_pool" .= _conf_ip_pool c
+               , "async"   .= _conf_async   c 
+               , "send_at" .= _conf_send_at c ]
 
 
 -- | Send a new transactional message through Mandrill using a template
@@ -33,9 +33,9 @@ sendTmpl k m c t tc =
                   , "template_name"    .= t
                   , "template_content" .= tc
                   , "message"          .= m
-                  , "ip_pool"          .= _cnf_ip_pool  c
-                  , "async"            .= _cnf_async    c 
-                  , "send_at"          .= _cnf_send_at  c ]
+                  , "ip_pool"          .= _conf_ip_pool  c
+                  , "async"            .= _conf_async    c 
+                  , "send_at"          .= _conf_send_at  c ]
 
 
 -- | Search recently sent messages and optionally narrow by date 
@@ -126,9 +126,9 @@ sendRaw k raw e n to c =
                  , "from_email"  .= e
                  , "from_name"   .= n
                  , "to"          .= to
-                 , "async"       .= _cnf_async c
-                 , "ip_pool"     .= _cnf_ip_pool c
-                 , "send_at"     .= _cnf_send_at c ]
+                 , "async"       .= _conf_async c
+                 , "ip_pool"     .= _conf_ip_pool c
+                 , "send_at"     .= _conf_send_at c ]
 
 -- | Queries your scheduled emails by sender or recipient, or both.
 listScheduled :: ApiKey -> 

@@ -25,8 +25,8 @@ add :: ApiKey -> Metadata ->  IO (Either ApiError Metadata)
 add k m  = 
     performRequest "/metadata/add.json" $
       object [ "key"           .= k
-             , "name"          .= _mtdt_name m
-             , "view_template" .= _mtdt_view_template m ]
+             , "name"          .= _metadata_name m
+             , "view_template" .= _metadata_view_template m ]
 
 
 -- | Delete an existing custom metadata field. Deletion isn't instataneous, 
@@ -36,5 +36,5 @@ update :: ApiKey -> Metadata ->  IO (Either ApiError Metadata)
 update k m  = 
         performRequest "/metadata/update.json" $
           object [ "key"           .= k
-                 , "name"          .= _mtdt_name m
-                 , "view_template" .= _mtdt_view_template m ]
+                 , "name"          .= _metadata_name m
+                 , "view_template" .= _metadata_view_template m ]
