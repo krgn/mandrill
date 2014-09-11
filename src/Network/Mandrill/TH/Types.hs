@@ -135,7 +135,7 @@ wbhk :: Webhook
   = record 
     id           :: ? integer
     url          :: Url
-    description  :: string 
+    description  :: Description
     auth_key     :: AuthKey
     events       :: [MessageEvent]
     created_at   :: string
@@ -148,7 +148,7 @@ sbacct :: Subaccount
   // a subaccount
   = record
     id            :: ? SubaccountId
-    name          :: string
+    name          :: Name
     custom_quota  :: Count
     hourly_quota  :: ? Count
     status        :: AccountStatus
@@ -171,9 +171,9 @@ indom :: InboundDomain
 inrt :: InboundRoute
   // an inbound route
   = record 
-    id      :: string
+    id      :: RouteId
     email   :: ? Email 
-    pattern :: string
+    pattern :: Pattern
     url     :: Url 
 
 expt :: Export

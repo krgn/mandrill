@@ -83,6 +83,22 @@ sbcntid :: SubaccountId
   // a subaccount 
   = string
 
+sbcntid :: RouteId
+  // a route id
+  = string
+
+pttn :: Pattern
+  // a pattern
+  = string
+
+clnadd :: ClientAddress
+  // ip address
+  = string
+
+helo :: Helo
+  // helo string
+  = string
+
 nts :: Notes
   // alias for name of soemthigng
   = string
