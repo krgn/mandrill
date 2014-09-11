@@ -66,18 +66,18 @@ expCon :: APINode -> ExpQ
 expCon an = [e| \resp ->
   case decodeWithErrs resp :: Either [(JSONError, Position)] $(nodeRepT an) of
    Right u -> Right u
-   Left  _ ->
+   Left  p ->
      case decodeWithErrs resp :: Either [(JSONError, Position)] ApiError of
       Right e -> Left e
-      Left  p -> Left def { message = show p }
+      Left  pp -> Left def { message = "first: " ++ show p ++ " next: " ++ show pp}
   |]
 
 expLCon :: APINode -> ExpQ
 expLCon an = [e| \resp ->
   case decodeWithErrs resp :: Either [(JSONError, Position)] [$(nodeRepT an)] of
    Right u -> Right u
-   Left  _ ->
+   Left  p ->
      case decodeWithErrs resp :: Either [(JSONError, Position)] ApiError of
       Right e -> Left e
-      Left  p -> Left def { message = show p }
+      Left  pp -> Left def { message = "first: " ++ show p ++ " next: " ++ show pp}
   |]
