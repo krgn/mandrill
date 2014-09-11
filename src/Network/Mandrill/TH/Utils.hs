@@ -32,9 +32,6 @@ asnc :: Async
   // type synonym for async sending
   = boolean
 
-ippool :: IpPool
-  // a template label
-  = string
 
 sndat :: SendAt
   // date alias

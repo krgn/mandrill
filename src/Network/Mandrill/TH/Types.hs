@@ -99,6 +99,45 @@ urlRec :: UrlRecord
     clicks        :: Count
     unique_clicks :: Count
 
+dnsinfo :: DnsInfo
+  // dns info
+  = record
+    enabled :: ? boolean
+    valid   :: ? boolean
+    error   :: ? string
+
+wrmup :: Warmup
+  // warmup
+  = record
+    warming_up :: boolean
+    start_at   :: string
+    end_at     :: string
+
+iprec :: IpRecord
+  // an ip record 
+  = record
+    ip         :: IpAddress
+    created_at :: ? string
+    pool       :: ? Name
+    domain     :: ? Url
+    custom_dns :: ? DnsInfo
+    warmup     :: ? Warmup
+    deleted    :: ? boolean
+
+ippool :: IpPool
+  // a ip pool  record
+  = record
+    name       :: Name
+    created_at :: ? string
+    ips        :: ? [IpRecord]
+    deleted    :: ? boolean
+
+
+prov :: IpProvision
+  // a provisioning
+  = record
+    requested_at :: string
+
 trkdmn :: TrackingDomain 
   // a tracking domain
   = record 
@@ -249,7 +288,7 @@ cnf :: MessageConfig
   // config
   = record 
     async   :: Async
-    ip_pool :: IpPool
+    ip_pool :: Name
     send_at :: SendAt 
 
 msg :: Message
