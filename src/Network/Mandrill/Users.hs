@@ -12,20 +12,23 @@ import Network.Mandrill.Utils
 
 import qualified Data.ByteString.Lazy as LBS
 
+
+-- | Return the information about the API-connected `User`
 info :: ApiKey -> IO (Either ApiError User)
-info key = do
-  resp <- performRequest "/users/info.json" (mkObj key)
-  return $ parseResponse resp
+info key = 
+     performRequest "/users/info.json" $
+       object ["key" .= key]
 
+
+-- | Validate an API key and respond to a ping
 ping :: ApiKey -> IO LBS.ByteString
-ping key =
-  let obj = mkObj key
-    in performRequest "/users/ping.json" obj
+ping key = 
+     performRequest' "/users/ping2.json" $
+       encode $ object ["key" .= key]
 
+-- | Return the senders that have tried to use this account, 
+-- both verified and unverified
 senders :: ApiKey -> IO (Either ApiError [Stat])
-senders key = do
-  resp <- performRequest "/users/senders.json" (mkObj key)
-  return $ parseResponse resp
-
-mkObj :: ApiKey -> LBS.ByteString
-mkObj key = encode (object ["key" .= key])
+senders key = 
+        performRequest "/users/senders.json" $
+          object ["key" .= key]
