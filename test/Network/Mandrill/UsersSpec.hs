@@ -41,6 +41,5 @@ test_senders =
     it "should return a list of sender that have used this account" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-
       response <- Users.senders key
       response `shouldSatisfy` isRight

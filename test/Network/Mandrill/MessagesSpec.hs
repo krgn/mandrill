@@ -169,18 +169,29 @@ test_listScheduled :: Spec
 test_listScheduled = 
   describe "/messages/list-scheduled.json" $
     it "should list a scheduled email" $ do
-      pending
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+          email = "karsten@kurt.net"
+      resp <- Messages.listScheduled key email
+      resp `shouldSatisfy` isRight
+       
 
 test_cancelScheduled :: Spec
 test_cancelScheduled = 
   describe "/messages/cancel-scheduled.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should cancel a scheduled message" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+          email = "karsten@kurt.net"
+      resp <- Messages.cancelScheduled key email
+      resp `shouldSatisfy` isRight
 
 test_reschedule :: Spec
 test_reschedule = 
   describe "/messages/reschedule.json" $
-    it "" $ do
-      --response <- info key
-      pending
+    it "should re-schedule a scheduled email" $ do
+      raw <- getEnv "MANDRILL_API_KEY"
+      let key = ApiKey { _ApiKey =  Text.pack raw }
+          email = "karsten@kurt.net"
+      resp <- Messages.reschedule key email "2015-12-02 12:23:12"
+      resp `shouldSatisfy` isRight
