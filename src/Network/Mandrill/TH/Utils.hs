@@ -87,6 +87,10 @@ sbcntid :: RouteId
   // a route id
   = string
 
+exptid :: ExportId
+  // an export id
+  = string
+
 pttn :: Pattern
   // a pattern
   = string

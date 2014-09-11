@@ -179,7 +179,7 @@ inrt :: InboundRoute
 expt :: Export
   // an export
   = record 
-    id          :: string
+    id          :: ExportId
     created_at  :: string
     finished_at :: ? string
     type        :: ExportType
