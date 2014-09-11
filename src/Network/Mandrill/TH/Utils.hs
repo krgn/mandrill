@@ -83,6 +83,10 @@ sbcntid :: SubaccountId
   // a subaccount 
   = string
 
+nts :: Notes
+  // alias for name of soemthigng
+  = string
+
 nm :: Name 
   // alias for name of soemthigng
   = string

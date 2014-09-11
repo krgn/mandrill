@@ -147,7 +147,7 @@ wbhk :: Webhook
 sbacct :: Subaccount
   // a subaccount
   = record
-    id            :: ? integer
+    id            :: ? SubaccountId
     name          :: string
     custom_quota  :: Count
     hourly_quota  :: ? Count
