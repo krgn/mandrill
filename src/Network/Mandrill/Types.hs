@@ -62,9 +62,9 @@ instance Default Message where
         , _msg_from_name                 = "Karsten Gebbert"
         , _msg_to                        = TO_single
           Recipient
-            { _rcpt_email                = "torsten@null2.net"
-            , _rcpt_name                 = "T. Orsten"
-            , _rcpt_type                 = Nothing
+            { _recipient_email           = "torsten@null2.net"
+            , _recipient_name            = "T. Orsten"
+            , _recipient_type            = Nothing
             }
         , _msg_important                 = Just False
         , _msg_track_opens               = Nothing

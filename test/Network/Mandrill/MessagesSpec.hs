@@ -30,10 +30,10 @@ test_send :: Spec
 test_send = 
   describe "/messages/send.json" $
     it "should send a message with valid key" $ do
-       let rcpt = TO_single Recipient { 
-                    _rcpt_email  = Text.pack "karsten@null2.net"
-                    , _rcpt_name = Text.pack "lotta luft"
-                    , _rcpt_type = Nothing
+       let rcpt = TO_single Recipient 
+                    { _recipient_email  = Text.pack "karsten@null2.net"
+                    , _recipient_name = Text.pack "lotta luft"
+                    , _recipient_type = Nothing
                     }
 
            msg = def { _msg_to      = rcpt 
@@ -57,9 +57,9 @@ test_sendTemplate =
   describe "/messages/send-template.json" $
     it "should send a template message with valid key" $ do
        let rcpt = TO_single 
-                     Recipient { _rcpt_email  = Text.pack "karsten@null2.net"
-                               , _rcpt_name = Text.pack "lotta luft"
-                               , _rcpt_type = Nothing }
+                     Recipient { _recipient_email = Text.pack "karsten@null2.net"
+                               , _recipient_name  = Text.pack "lotta luft"
+                               , _recipient_type  = Nothing }
 
            msg = def { _msg_to      = rcpt 
                      , _msg_subject = Text.pack "test"

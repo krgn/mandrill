@@ -114,29 +114,29 @@ athk :: AuthKey
 mlbx :: Mailbox
   = string
 
-htmlfrg :: HtmlFragment 
+html :: HtmlFragment 
   = record
     html :: string
 
-tplcnt :: Content
+content :: Content
   // type synoym for the name of a template
   = record
     name    :: Name
     content :: string
 
-dmnst :: DomainStatus
+status :: DomainStatus
   = enum
     | sent
     | already_verified
 
-exptst :: ExportType
+type :: ExportType
   // type of an export
   = enum 
     | activity
     | reject
     | whitelist
 
-msgevt :: MessageEvent
+event :: MessageEvent
   // an event in the message lifecycle
   = enum 
     | send
@@ -148,7 +148,7 @@ msgevt :: MessageEvent
     | unsub
     | reject
 
-exptst :: ExportState 
+state :: ExportState 
   // state of an export
   = enum 
     | waiting
@@ -157,7 +157,7 @@ exptst :: ExportState
     | error
     | expired 
 
-ss :: SendStatus
+send_status :: SendStatus
   // The status enum 
   = enum
     | sent
@@ -166,7 +166,7 @@ ss :: SendStatus
     | rejected
     | invalid
 
-rr :: RejectReason
+reason :: RejectReason
   // Reason enum when message was rejected
   = enum
     | hard_bounce
@@ -179,20 +179,20 @@ rr :: RejectReason
     | test_mode_limit
     | rule 
 
-mtst :: MetadataState
+state :: MetadataState
   // enum for status
   = enum
     | active
     | delete
     | index
 
-acctst :: AccountStatus
+account :: AccountStatus
   // enum for status
   = enum
     | active
     | paused
 
-apiKey :: ApiKey
+key :: ApiKey
   // key for api
   = basic string
 
@@ -204,14 +204,14 @@ email :: Email
   // Type synonym for email addresses
   = string
 
-rcpt :: Recipient
+recipient :: Recipient
   // A recipient with data
   = record
     email :: Email
     name  :: string
     type  :: ? HeaderType
 
-headerType :: HeaderType
+header :: HeaderType
   // an enum to discern to cc and bcc header field types
   = enum
     | to
