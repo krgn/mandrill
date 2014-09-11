@@ -7,6 +7,7 @@ import           Network.Mandrill.Types
 import qualified Data.Text                 as Text 
 import qualified Network.Mandrill.Webhooks as Webhooks
 import           System.Environment
+import Data.Maybe
 
 spec :: Spec
 spec = do
@@ -22,7 +23,14 @@ test_delete =
     it "delete a webhook" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Webhooks.delete key 1234
+
+      a <- Webhooks.add key "example.com" "it is what it is" []
+
+      let hook = case a of
+                   Right h -> h
+                   Left _ -> undefined
+
+      resp <- Webhooks.delete key (fromJust $ _hook_id hook)
       resp `shouldSatisfy` isRight
 
 test_update :: Spec
@@ -31,7 +39,13 @@ test_update =
     it "should update a webhook" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Webhooks.update key 1234 "example.com" "it is what it is" []
+      a <- Webhooks.add key "example.com" "it is what it is" []
+
+      let hook = case a of
+                   Right h -> h
+                   Left _ -> undefined
+
+      resp <- Webhooks.update key (fromJust $ _hook_id hook) "example.com" "it is what it is" []
       resp `shouldSatisfy` isRight
 
 test_info :: Spec
@@ -40,7 +54,13 @@ test_info =
     it "should return some detailed info about a webhook" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Webhooks.info key 1234
+      a <- Webhooks.add key "example.com" "it is what it is" []
+
+      let hook = case a of
+                   Right h -> h
+                   Left _ -> undefined
+
+      resp <- Webhooks.info key (fromJust $ _hook_id hook)
       resp `shouldSatisfy` isRight
 
 test_add :: Spec

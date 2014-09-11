@@ -21,7 +21,6 @@ test_info =
     it "should return some user info upon valid request" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-
       response <- Users.info key
       response `shouldSatisfy` isRight
 
@@ -31,7 +30,6 @@ test_ping =
     it "should return pong upon valid request" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-
       response <- Users.ping key
       CBS.unpack (LBS.toStrict response) `shouldBe` "\"PONG!\""
 

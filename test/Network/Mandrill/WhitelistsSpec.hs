@@ -21,6 +21,7 @@ test_add =
     it "should add something to the whitelists" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
+
       resp <- Whitelist.add key "cow@moo.org" "bounces"
       resp `shouldSatisfy` isRight
 

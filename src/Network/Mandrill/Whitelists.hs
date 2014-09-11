@@ -23,7 +23,7 @@ add k e c =
 
 -- | Retrieves your email rejection whitelist. You can provide an email address 
 -- or search prefix to limit the results. Returns up to 1000 results.
-list :: ApiKey -> Email -> IO (Either ApiError Whitelist)
+list :: ApiKey -> Email -> IO (Either ApiError [Whitelist])
 list k e =
      performRequest "/whitelists/list.json" $
        object ["key" .= k, "email" .= e]

@@ -23,7 +23,7 @@ info key =
 -- | Validate an API key and respond to a ping
 ping :: ApiKey -> IO LBS.ByteString
 ping key = 
-     performRequest' "/users/ping2.json" $
+     performRequest' "/users/ping.json" $
        encode $ object ["key" .= key]
 
 -- | Return the senders that have tried to use this account, 

@@ -53,13 +53,12 @@ instance Default Template where
 instance Default Message where
   def = Message 
         { _msg__id                       = Nothing 
-        , _msg_ts                        = Nothing 
-        , _msg_html                      = "<strong>test</strong>"
-        , _msg_text                      = "test"
-        , _msg_subject                   = "this is a .. "
-        , _msg_from_email                = "karsten@null2.net"
-        , _msg_from_name                 = "Karsten Gebbert"
-        , _msg_to                        = TO_single
+        , _msg_html                      = Nothing
+        , _msg_text                      = Nothing
+        , _msg_subject                   = Nothing
+        , _msg_from_email                = Nothing
+        , _msg_from_name                 = Nothing
+        , _msg_to                        = Just $ TO_single
           Recipient
             { _recipient_email           = "torsten@null2.net"
             , _recipient_name            = "T. Orsten"

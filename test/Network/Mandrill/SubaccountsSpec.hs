@@ -26,6 +26,7 @@ test_resume =
     it "should resume a paused subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
+      _    <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
       resp <- Subaccounts.resume key "acc-1"
       resp `shouldSatisfy` isRight
 
@@ -35,6 +36,7 @@ test_pause =
     it "should pause a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
+      _    <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
       resp <- Subaccounts.pause key "acc-1"
       resp `shouldSatisfy` isRight
 
@@ -62,6 +64,7 @@ test_info =
     it "should return some info about a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
+      _    <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
       resp <- Subaccounts.info key "acc-1"
       resp `shouldSatisfy` isRight
 
@@ -71,6 +74,7 @@ test_add =
     it "should add a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
+
       resp <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
       resp `shouldSatisfy` isRight
 

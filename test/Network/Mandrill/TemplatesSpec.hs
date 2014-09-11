@@ -26,7 +26,7 @@ test_add =
     it "should add the template" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.add key def False
+      resp <- Templates.add key def { _tmpl_name = "test1" } False
       resp `shouldSatisfy` isRight
 
 test_timeSeries :: Spec
@@ -35,7 +35,7 @@ test_timeSeries =
     it "should return some stats for a template" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.timeSeries key "hello"
+      resp <- Templates.timeSeries key "test1"
       resp `shouldSatisfy` isRight
 
 test_render :: Spec
@@ -44,7 +44,7 @@ test_render =
     it "should render a template to html" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.render key "hello" [] []
+      resp <- Templates.render key "test1" [] []
       resp `shouldSatisfy` isRight
 
 test_delete :: Spec
@@ -53,7 +53,7 @@ test_delete =
     it "should delete a template" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.delete key "hello"
+      resp <- Templates.delete key "test1"
       resp `shouldSatisfy` isRight
 
 test_publish :: Spec
@@ -62,7 +62,7 @@ test_publish =
     it "should publish a template" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.publish key "hello"
+      resp <- Templates.publish key "test1"
       resp `shouldSatisfy` isRight
 
 test_update :: Spec
@@ -71,7 +71,7 @@ test_update =
     it "should update a template" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.publish key "hello"
+      resp <- Templates.publish key "test1"
       resp `shouldSatisfy` isRight
 
 test_info :: Spec
@@ -80,7 +80,7 @@ test_info =
     it "should return some info about a template" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.info key "hello"
+      resp <- Templates.info key "test1"
       resp `shouldSatisfy` isRight
 
 test_list :: Spec
@@ -89,5 +89,5 @@ test_list =
     it "should list all templates" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Templates.list key "bye"
+      resp <- Templates.list key "test1"
       resp `shouldSatisfy` isRight

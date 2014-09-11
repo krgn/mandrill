@@ -7,7 +7,7 @@ import Network.Mandrill.Types
 import Network.Mandrill.Utils
 
 -- | Return the senders that have tried to use this account.
-list :: ApiKey -> IO (Either ApiError Sender)
+list :: ApiKey -> IO (Either ApiError [Sender])
 list k =
      performRequest "/senders/list.json" $
        object [ "key" .= k ]

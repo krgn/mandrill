@@ -15,6 +15,7 @@ import Data.Aeson
 performRequest :: (MandrillResponse a) => String -> Value -> IO (Either ApiError a)
 performRequest endpoint obj = do
                response <- performRequest' endpoint (encode obj)
+               print response
                return $ parseResponse response
 
 -- | lower-level version 

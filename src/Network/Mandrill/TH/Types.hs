@@ -77,8 +77,8 @@ rec :: Record
   // spf or dkim record info of a DomainRecord
   = record
     valid       :: boolean
-    valid_after :: string
-    error       :: string
+    valid_after :: ? string
+    error       :: ? string
 
 domrec :: DomainRecord
   // a domain
@@ -86,9 +86,9 @@ domrec :: DomainRecord
     domain         :: Url
     created_at     :: string
     last_tested_at :: string
-    spf            :: Record
-    dkim           :: Record
-    verified_at    :: string
+    spf            :: ? Record
+    dkim           :: ? Record
+    verified_at    :: ? string
     valid_signing  :: boolean 
 
 domstate :: DomainState
@@ -184,10 +184,10 @@ hook :: Webhook
     auth_key     :: AuthKey
     events       :: [MessageEvent]
     created_at   :: string
-    last_sent_at :: string
+    last_sent_at :: ? string
     batches_sent :: Count
     events_sent  :: Count
-    last_error   :: string
+    last_error   :: ? string
 
 acc  :: Subaccount
   // a subaccount
@@ -199,12 +199,12 @@ acc  :: Subaccount
     status        :: AccountStatus
     reputation    :: Count
     created_at    :: string
-    first_sent_at :: string
+    first_sent_at :: ? string
     send_hourly   :: ? Count
     sent_weekly   :: Count 
     sent_monthly  :: Count
     sent_total    :: Count
-    last_30_days  :: ? [Stat] 
+    last_30_days  :: ? Stat 
 
 indom :: InboundDomain
   // an inbound domain record
@@ -248,14 +248,13 @@ whitelist :: Whitelist
   // a whitelist entry
   = record 
     email      :: Email
-    detail     :: string
-    created_at :: string
+    detail     :: ? string
+    created_at :: ? string
 
 detail :: Detail
   // A stat containing information how often a messsage has been opened or stuff 
   // was clicked.
   = record 
-    ts       :: utc
     url      :: ? Url
     ip       :: IpAddress  
     location :: string
@@ -264,7 +263,7 @@ detail :: Detail
 md :: MessageMetadata 
   // Message metadata
   = record 
-    website :: string
+    website :: ? string
 
 rmd :: RecipientMetadata
   // per recipient metadata 
@@ -300,14 +299,13 @@ conf :: MessageConfig
 msg :: Message
   // A message structure
   = record 
-    ts                        :: ? utc
     _id                       :: ? MessageId
-    html                      ::   string
-    text                      ::   string
-    subject                   ::   string
-    from_email                ::   Email
-    from_name                 ::   string
-    to                        ::   To
+    html                      :: ? string
+    text                      :: ? string
+    subject                   :: ? string
+    from_email                :: ? Email
+    from_name                 :: ? string
+    to                        :: ? To
     important                 :: ? boolean
     track_opens               :: ? boolean
     track_clicks              :: ? boolean
@@ -333,7 +331,7 @@ msg :: Message
     attachments               ::   [Attachment]
     images                    :: ? [Image]
 
-delstate :: DeliveryStatus
+delivery :: DeliveryStatus
   // The response object when sending messages
   = record
     email         ::   Email
@@ -344,10 +342,9 @@ delstate :: DeliveryStatus
 result :: SearchResult
   // result type for search requests
   = record 
-    ts            ::   utc
     _id           ::   MessageId
     sender        ::   Email
-    template      ::   Name
+    template      :: ? Name
     subject       ::   string
     email         ::   Email
     tags          ::   [Tag]
@@ -362,7 +359,6 @@ result :: SearchResult
 event :: SmtpEvent
   // an event in the history of the message
   = record 
-    ts   :: utc
     type :: string
     diag :: string
 
