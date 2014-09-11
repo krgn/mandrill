@@ -6,18 +6,41 @@ import Network.Mandrill.Response
 import Network.Mandrill.Types
 import Network.Mandrill.Utils
 
-add :: ApiKey -> Either ApiError ()
-add _ = undefined
+list :: ApiKey -> IO (Either ApiError [Webhook])
+list k = do
+     resp <- performRequest "/webhooks/list.json" mkObj
+     return $ parseResponse resp
+     where mkObj = encode $ object [ "key" .= k ]
 
-info :: ApiKey -> Either ApiError ()
-info _ = undefined
+add :: ApiKey -> Url -> Description -> [MessageEvent] -> IO (Either ApiError Webhook)
+add k u d es = do
+    resp <- performRequest "/webhooks/add.json" mkObj
+    return $ parseResponse resp
+    where mkObj = encode $ object [ "key"         .= k
+                                  , "url"         .= u
+                                  , "description" .= d 
+                                  , "events"      .= es ]
 
-update :: ApiKey -> Either ApiError ()
-update _ = undefined
+info :: ApiKey -> HookId -> IO (Either ApiError Webhook)
+info k i = do
+     resp <- performRequest "/webhooks/info.json" mkObj
+     return $ parseResponse resp
+     where mkObj = encode $ object [ "key" .= k, "id" .= i ]
 
-delete :: ApiKey -> Either ApiError ()
-delete _ = undefined
+update :: ApiKey -> HookId -> Url -> Description -> [MessageEvent] -> IO (Either ApiError Webhook)
+update k i u d es = do
+       resp <- performRequest "/webhooks/update.json" mkObj
+       return $ parseResponse resp
+       where mkObj = encode $ object [ "key"         .= k
+                                     , "id"          .= i
+                                     , "url"         .= u
+                                     , "description" .= d 
+                                     , "events"      .= es ]
 
-list :: ApiKey -> Either ApiError ()
-list _ = undefined
+delete :: ApiKey -> HookId -> IO (Either ApiError Webhook)
+delete k i = do
+       resp <- performRequest "/webhooks/delete.json" mkObj
+       return $ parseResponse resp
+       where mkObj = encode $ object [ "key" .= k
+                                     , "id"  .= i ]
 

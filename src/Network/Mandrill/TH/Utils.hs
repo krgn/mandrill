@@ -52,6 +52,13 @@ qry :: Query
   // a query
   = string
 
+desc :: Description
+  // a description
+  = string
+
+hid :: HookId
+  = integer
+
 cmt :: Comment
   // a comment
   = string
