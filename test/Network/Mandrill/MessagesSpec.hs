@@ -6,6 +6,7 @@ import Test.Hspec
 import Test.Hspec.Expectations.Contrib
 
 import           Network.Mandrill.Types
+import           Network.Mandrill.Utils
 import qualified Network.Mandrill.Messages as Messages
 import qualified Network.Mandrill.Templates as Templates
 import           System.Environment
@@ -34,7 +35,6 @@ test_send =
     it "should send a message with valid key" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       now <- getCurrentTime
-      let key = ApiKey { _ApiKey =  Text.pack raw }
       let rcpt = TO_single Recipient 
                    { _recipient_email = "karsten@null2.net"
                    , _recipient_name = "lotta luft"
@@ -51,8 +51,8 @@ test_send =
                 , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
 
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ Messages.send msg cfg
 
-      resp <- Messages.send key msg cfg
       resp `shouldSatisfy` isRight
 
 
@@ -62,15 +62,11 @@ test_sendTemplate =
     it "should send a template message with valid key" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       now <- getCurrentTime
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-          tmpl = def { _tmpl_name = "test" }
-
-      _ <- Templates.add key tmpl True 
-
-      let rcpt = TO_single 
-                    Recipient { _recipient_email = "karsten@null2.net"
-                              , _recipient_name  = "lotta luft"
-                              , _recipient_type  = Nothing }
+      let tmpl = def { _tmpl_name = "test" }
+          rcpt = TO_single 
+                     Recipient { _recipient_email = "karsten@null2.net"
+                               , _recipient_name  = "lotta luft"
+                               , _recipient_type  = Nothing }
 
           msg = def { _msg_to      = Just rcpt 
                     , _msg_subject = Just "test"
@@ -80,7 +76,9 @@ test_sendTemplate =
                               , _conf_ip_pool = ""
                               , _conf_send_at = Just TimeStamp { _ts_utctime = Just now } } 
 
-      resp <- Messages.sendTmpl key msg cfg (_tmpl_name tmpl)  []
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        _ <- Templates.add tmpl True 
+        Messages.sendTmpl msg cfg (_tmpl_name tmpl)  []
       resp `shouldSatisfy` isRight
 
 test_search :: Spec
@@ -88,15 +86,14 @@ test_search =
   describe "/messages/search.json" $
     it "should return some search results" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-
       let q  = "karsten@null2.net"
           f  = "2013-01-01"
           t  = "2013-01-03"
           ts = []
           ss = []
           ks = []
-      resp <- Messages.search key q f t ts ss ks 10
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        Messages.search q f t ts ss ks 10
       resp `shouldSatisfy` isRight
 
 test_searchTimeSeries :: Spec
@@ -104,15 +101,14 @@ test_searchTimeSeries =
   describe "/messages/search-time-series.json" $
     it "should return a list of statistics" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-
       let q  = "karsten@null2.net"
           f  = "2013-01-01"
           t  = "2013-01-03"
           ts = []
           ss = []
           ks = []
-      resp <- Messages.search key q f t ts ss ks 10
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        Messages.search q f t ts ss ks 10
       resp `shouldSatisfy` isRight
 
 
@@ -121,8 +117,6 @@ test_info =
   describe "/messages/info.json" $
     it "should return a message when queried" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-
       let q  = "karsten@null2.net"
           f  = "2013-01-01"
           t  = "2016-01-03"
@@ -130,13 +124,13 @@ test_info =
           ss = []
           ks = []
 
-      query <- Messages.search key q f t ts ss ks 10
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+           query <- Messages.search q f t ts ss ks 10
+           let vals = case query of
+                       Right rs -> rs
+                       Left _ -> []
+           Messages.info (_result__id $ head vals)
 
-      let vals = case query of
-                   Right rs -> rs
-                   Left _ -> []
-
-      resp <- Messages.info key (_result__id $ head vals)
       resp `shouldSatisfy` isRight
 
 
@@ -145,20 +139,18 @@ test_content =
   describe "/messages/content.json" $
     it "should return entire content of a sent message" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-
       let q  = "karsten@null2.net"
           f  = "2013-01-01"
           t  = "2016-01-03"
           ts = []
           ss = []
           ks = []
-      query <- Messages.search key q f t ts ss ks 10
-      let vals = case query of
-                   Right rs -> rs
-                   Left _ -> []
-
-      resp <- Messages.content key (_result__id $ head vals)
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        query <- Messages.search q f t ts ss ks 10
+        let vals = case query of
+                     Right rs -> rs
+                     Left _ -> []
+        Messages.content (_result__id $ head vals)
       resp `shouldSatisfy` isRight
 
 test_parse :: Spec
@@ -166,10 +158,9 @@ test_parse =
   describe "/messages/parse.json" $
     it "should return a message for our raw string" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-          msg = "hahaha"
 
-      resp <- Messages.parse key msg
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        Messages.parse "hello"
       resp `shouldSatisfy` isRight
 
 
@@ -179,8 +170,7 @@ test_sendRaw =
     it "should send off a raw message" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       now <- getCurrentTime
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-          msg = "hahaha"
+      let msg = "hahaha"
           email = "karsten@kurt.net"
           n    = "karsten kurt"
           to = TO_single $ Recipient { _recipient_email = "karsten@null2.net"
@@ -191,7 +181,8 @@ test_sendRaw =
                 , _conf_ip_pool = ""
                 , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
-      resp <- Messages.sendRaw key msg email n to cfg
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        Messages.sendRaw msg email n to cfg
       resp `shouldSatisfy` isRight
 
 
@@ -201,8 +192,7 @@ test_listScheduled =
     it "should list a scheduled email" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       now <- getCurrentTime
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-          email = "karsten@kurt.net"
+      let email = "karsten@kurt.net"
 
           rcpt = TO_single Recipient 
                    { _recipient_email = "karsten@null2.net"
@@ -219,10 +209,10 @@ test_listScheduled =
                 , _conf_ip_pool = ""
                 , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        _ <- Messages.send msg cfg
+        Messages.listScheduled email
 
-      _ <- Messages.send key msg cfg
-
-      resp <- Messages.listScheduled key email
       resp `shouldSatisfy` isRight
        
 
@@ -232,8 +222,7 @@ test_cancelScheduled =
     it "should cancel a scheduled message" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       now <- getCurrentTime
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-          rcpt = TO_single Recipient 
+      let rcpt = TO_single Recipient 
                    { _recipient_email = "karsten@null2.net"
                    , _recipient_name = "lotta luft"
                    , _recipient_type = Nothing
@@ -249,14 +238,13 @@ test_cancelScheduled =
                 , _conf_ip_pool = ""
                 , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        d <- Messages.send msg cfg
+        let st = case d of
+                   Right v -> v
+                   Left _  -> []
+        Messages.cancelScheduled (_delivery__id $ head st)
 
-      d <- Messages.send key msg cfg
-
-      let st = case d of
-                 Right v -> v
-                 Left _  -> []
-
-      resp <- Messages.cancelScheduled key (_delivery__id $ head st)
       resp `shouldSatisfy` isRight
 
 test_reschedule :: Spec
@@ -265,7 +253,6 @@ test_reschedule =
     it "should re-schedule a scheduled email" $ do
       raw <- getEnv "MANDRILL_API_KEY"
       now <- getCurrentTime
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-          email = "karsten@kurt.net"
-      resp <- Messages.reschedule key email TimeStamp { _ts_utctime = Just now }
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        Messages.reschedule "user@host.com" TimeStamp { _ts_utctime = Just now }
       resp `shouldSatisfy` isRight
