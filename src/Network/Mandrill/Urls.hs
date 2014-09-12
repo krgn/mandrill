@@ -35,7 +35,7 @@ addTrackingDomain :: (MonadIO m) =>
                     Url -> 
                     MandrillT m (Either ApiError TrackingDomain)
 addTrackingDomain d =
-  performRequest "/ursl/add-tracking-domain.json" [ "domain" .= d ]
+  performRequest "/urls/add-tracking-domain.json" [ "domain" .= d ]
 
 
 -- | Checks the CNAME settings for a tracking domain. The domain must have been 
@@ -44,4 +44,4 @@ checkTrackingDomain :: (MonadIO m) =>
                       Url -> 
                       MandrillT m (Either ApiError TrackingDomain)
 checkTrackingDomain d =
-  performRequest "/ursl/add-tracking-domain.json" [ "domain" .= d ]
+  performRequest "/urls/add-tracking-domain.json" [ "domain" .= d ]
