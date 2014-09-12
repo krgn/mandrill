@@ -5,6 +5,7 @@ module Network.Mandrill.SubaccountsSpec where
 import Test.Hspec
 import Test.Hspec.Expectations.Contrib
 import           Network.Mandrill.Types
+import           Network.Mandrill.Utils
 import qualified Data.Text                    as Text 
 import qualified Network.Mandrill.Subaccounts as Subaccounts
 import           System.Environment
@@ -25,9 +26,9 @@ test_resume =
   describe "/subaccounts/resume.json" $
     it "should resume a paused subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      _    <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
-      resp <- Subaccounts.resume key "acc-1"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        _ <- Subaccounts.add "acc-1" "My Acc" "yes, indeed." 50
+        Subaccounts.resume "acc-1"
       resp `shouldSatisfy` isRight
 
 test_pause :: Spec
@@ -35,9 +36,9 @@ test_pause =
   describe "/subaccounts/pause.json" $
     it "should pause a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      _    <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
-      resp <- Subaccounts.pause key "acc-1"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        _ <- Subaccounts.add "acc-1" "My Acc" "yes, indeed." 50
+        Subaccounts.pause "acc-1"
       resp `shouldSatisfy` isRight
 
 test_delete :: Spec
@@ -45,8 +46,8 @@ test_delete =
   describe "/subaccounts/delete.json" $
     it "should delete a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Subaccounts.delete key "acc-1"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $
+        Subaccounts.delete "acc-1"
       resp `shouldSatisfy` isRight
 
 test_update :: Spec
@@ -54,8 +55,8 @@ test_update =
   describe "/subaccounts/update.json" $
     it "update a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Subaccounts.update key "acc-1" "My Acc" "yes, indeed." 50
+      resp <- runMandrill (ApiKey $ Text.pack raw) $
+        Subaccounts.update "acc-1" "My Acc" "yes, indeed." 50
       resp `shouldSatisfy` isRight
 
 test_info :: Spec
@@ -63,9 +64,9 @@ test_info =
   describe "/subaccounts/info.json" $
     it "should return some info about a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      _    <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
-      resp <- Subaccounts.info key "acc-1"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        _ <- Subaccounts.add "acc-1" "My Acc" "yes, indeed." 50
+        Subaccounts.info "acc-1"
       resp `shouldSatisfy` isRight
 
 test_add :: Spec
@@ -73,9 +74,8 @@ test_add =
   describe "/subaccounts/add.json" $
     it "should add a subaccount" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-
-      resp <- Subaccounts.add key "acc-1" "My Acc" "yes, indeed." 50
+      resp <- runMandrill (ApiKey $ Text.pack raw) $
+        Subaccounts.add "acc-1" "My Acc" "yes, indeed." 50
       resp `shouldSatisfy` isRight
 
 test_list :: Spec
@@ -83,6 +83,6 @@ test_list =
   describe "/subaccounts/list.json" $
     it "should list all subaccounts" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Subaccounts.list key "acc-1"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $
+        Subaccounts.list "acc-1"
       resp `shouldSatisfy` isRight

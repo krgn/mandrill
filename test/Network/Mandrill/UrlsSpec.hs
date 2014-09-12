@@ -5,6 +5,7 @@ module Network.Mandrill.UrlsSpec where
 import Test.Hspec
 import Test.Hspec.Expectations.Contrib
 import           Network.Mandrill.Types
+import           Network.Mandrill.Utils
 import qualified Data.Text              as Text 
 import qualified Network.Mandrill.Urls  as Urls
 import           System.Environment
@@ -23,8 +24,7 @@ test_list =
   describe "/urls/list.json" $
     it "should list all urls" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Urls.list key 
+      resp <- runMandrill (ApiKey $ Text.pack raw) Urls.list
       resp `shouldSatisfy` isRight
 
 test_search :: Spec
@@ -32,8 +32,7 @@ test_search =
   describe "/urls/search.json" $
     it "should return a list of urls" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Urls.search key "hello"
+      resp <- runMandrill (ApiKey $ Text.pack raw) (Urls.search "hello")
       resp `shouldSatisfy` isRight
 
 test_timeSeries :: Spec
@@ -41,8 +40,8 @@ test_timeSeries =
   describe "/urls/time-series.json" $
     it "should return a list of stats for an url" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Urls.timeSeries key "example.com"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $
+         Urls.timeSeries "example.com"
       resp `shouldSatisfy` isRight
 
 test_trackingDomains :: Spec
@@ -50,8 +49,7 @@ test_trackingDomains =
   describe "/urls/tracking-domains.json" $
     it "should return a list of tracking domains" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Urls.trackingDomains key
+      resp <- runMandrill (ApiKey $ Text.pack raw) Urls.trackingDomains 
       resp `shouldSatisfy` isRight
 
 test_addTrackingDomain :: Spec
@@ -59,8 +57,8 @@ test_addTrackingDomain =
   describe "/urls/add-tracking-domain.json" $
     it "should add a tracking domain" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Urls.addTrackingDomain key "example.com"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $
+        Urls.addTrackingDomain "example.com"
       resp `shouldSatisfy` isRight
 
 test_checkTrackingDomain :: Spec
@@ -68,6 +66,6 @@ test_checkTrackingDomain =
   describe "/urls/check-tracking-domain.json" $
     it "should check a tracking domain" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      let key = ApiKey { _ApiKey =  Text.pack raw }
-      resp <- Urls.checkTrackingDomain key "example.com" 
+      resp <- runMandrill (ApiKey $ Text.pack raw) $
+         Urls.checkTrackingDomain "example.com" 
       resp `shouldSatisfy` isRight

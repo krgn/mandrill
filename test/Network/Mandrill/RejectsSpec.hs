@@ -5,6 +5,7 @@ module Network.Mandrill.RejectsSpec where
 import Test.Hspec
 import Test.Hspec.Expectations.Contrib
 import           Network.Mandrill.Types
+import           Network.Mandrill.Utils
 import qualified Network.Mandrill.Rejects as Rejects
 import qualified Data.Text                as Text 
 import           System.Environment
@@ -20,8 +21,8 @@ test_add =
   describe "/rejects/add.json" $
     it "should add something to the blacklist" $ do
        raw <- getEnv "MANDRILL_API_KEY"
-       let key = ApiKey { _ApiKey =  Text.pack raw }
-       resp <- Rejects.add key "hummel@hammel.de" "ain't no good" "default"
+       resp <- runMandrill (ApiKey $ Text.pack raw) $
+         Rejects.add  "hummel@hammel.de" "ain't no good" "default"
        resp `shouldSatisfy` isRight
 
 
@@ -30,8 +31,8 @@ test_list =
   describe "/rejects/list.json" $
     it "should list all entries in blacklist" $ do
        raw <- getEnv "MANDRILL_API_KEY"
-       let key = ApiKey { _ApiKey =  Text.pack raw }
-       resp <- Rejects.list key "hummel@hammel.de" True "default"
+       resp <- runMandrill (ApiKey $ Text.pack raw) $
+         Rejects.list "hummel@hammel.de" True "default"
        resp `shouldSatisfy` isRight
 
 test_delete :: Spec
@@ -39,7 +40,6 @@ test_delete =
   describe "/rejects/delete.json" $
     it "should delete a blacklisted email" $ do
        raw <- getEnv "MANDRILL_API_KEY"
-
-       let key = ApiKey { _ApiKey = Text.pack raw }
-       resp <- Rejects.delete key "hummel@hammel.de" "default"
+       resp <- runMandrill (ApiKey $ Text.pack raw) $
+         Rejects.delete "hummel@hammel.de" "default"
        resp `shouldSatisfy` isRight
