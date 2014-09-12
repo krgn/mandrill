@@ -38,7 +38,7 @@ rejects k e =
 -- that includes the following fields: email, detail, created_at.
 whitelist :: ApiKey -> Email -> IO (Either ApiError Export)
 whitelist k e =
-          performRequest "/exports/withlist.json" $
+          performRequest "/exports/whitelist.json" $
             object [ "key" .= k, "notify_email" .= e ]
 
 

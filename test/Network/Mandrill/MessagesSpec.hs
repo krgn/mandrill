@@ -10,6 +10,7 @@ import qualified Network.Mandrill.Messages as Messages
 import qualified Network.Mandrill.Templates as Templates
 import           System.Environment
 import qualified Data.Text as Text 
+import           Data.Time.Clock
 
 
 spec :: Spec
@@ -32,6 +33,7 @@ test_send =
   describe "/messages/send.json" $
     it "should send a message with valid key" $ do
       raw <- getEnv "MANDRILL_API_KEY"
+      now <- getCurrentTime
       let key = ApiKey { _ApiKey =  Text.pack raw }
       let rcpt = TO_single Recipient 
                    { _recipient_email = "karsten@null2.net"
@@ -46,7 +48,7 @@ test_send =
           cfg = MessageConfig {
                   _conf_async   = False
                 , _conf_ip_pool = ""
-                , _conf_send_at = ""
+                , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
 
 
@@ -59,6 +61,7 @@ test_sendTemplate =
   describe "/messages/send-template.json" $
     it "should send a template message with valid key" $ do
       raw <- getEnv "MANDRILL_API_KEY"
+      now <- getCurrentTime
       let key = ApiKey { _ApiKey =  Text.pack raw }
           tmpl = def { _tmpl_name = "test" }
 
@@ -75,7 +78,7 @@ test_sendTemplate =
 
           cfg = MessageConfig { _conf_async   = False
                               , _conf_ip_pool = ""
-                              , _conf_send_at = "" }
+                              , _conf_send_at = Just TimeStamp { _ts_utctime = Just now } } 
 
       resp <- Messages.sendTmpl key msg cfg (_tmpl_name tmpl)  []
       resp `shouldSatisfy` isRight
@@ -175,6 +178,7 @@ test_sendRaw =
   describe "/messages/send-raw.json" $
     it "should send off a raw message" $ do
       raw <- getEnv "MANDRILL_API_KEY"
+      now <- getCurrentTime
       let key = ApiKey { _ApiKey =  Text.pack raw }
           msg = "hahaha"
           email = "karsten@kurt.net"
@@ -185,7 +189,7 @@ test_sendRaw =
           cfg = MessageConfig {
                   _conf_async   = False
                 , _conf_ip_pool = ""
-                , _conf_send_at = ""
+                , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
       resp <- Messages.sendRaw key msg email n to cfg
       resp `shouldSatisfy` isRight
@@ -196,6 +200,7 @@ test_listScheduled =
   describe "/messages/list-scheduled.json" $
     it "should list a scheduled email" $ do
       raw <- getEnv "MANDRILL_API_KEY"
+      now <- getCurrentTime
       let key = ApiKey { _ApiKey =  Text.pack raw }
           email = "karsten@kurt.net"
 
@@ -212,7 +217,7 @@ test_listScheduled =
           cfg = MessageConfig {
                   _conf_async   = False
                 , _conf_ip_pool = ""
-                , _conf_send_at = "2017-02-01 10:00:00"
+                , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
 
       _ <- Messages.send key msg cfg
@@ -226,6 +231,7 @@ test_cancelScheduled =
   describe "/messages/cancel-scheduled.json" $
     it "should cancel a scheduled message" $ do
       raw <- getEnv "MANDRILL_API_KEY"
+      now <- getCurrentTime
       let key = ApiKey { _ApiKey =  Text.pack raw }
           rcpt = TO_single Recipient 
                    { _recipient_email = "karsten@null2.net"
@@ -241,7 +247,7 @@ test_cancelScheduled =
           cfg = MessageConfig {
                   _conf_async   = False
                 , _conf_ip_pool = ""
-                , _conf_send_at = "2017-02-01 10:00:00"
+                , _conf_send_at = Just TimeStamp { _ts_utctime = Just now }
                 }
 
       d <- Messages.send key msg cfg
@@ -258,7 +264,8 @@ test_reschedule =
   describe "/messages/reschedule.json" $
     it "should re-schedule a scheduled email" $ do
       raw <- getEnv "MANDRILL_API_KEY"
+      now <- getCurrentTime
       let key = ApiKey { _ApiKey =  Text.pack raw }
           email = "karsten@kurt.net"
-      resp <- Messages.reschedule key email "2015-12-02 12:23:12"
+      resp <- Messages.reschedule key email TimeStamp { _ts_utctime = Just now }
       resp `shouldSatisfy` isRight

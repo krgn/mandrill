@@ -32,10 +32,6 @@ asnc :: Async
   // type synonym for async sending
   = boolean
 
-sndat :: SendAt
-  // date alias
-  = string
-
 frm :: From
   // a date
   = string
@@ -208,7 +204,7 @@ recipient :: Recipient
   // A recipient with data
   = record
     email :: Email
-    name  :: string
+    name  :: Name
     type  :: ? HeaderType
 
 header :: HeaderType
@@ -222,14 +218,14 @@ image :: Image
   // A recpient of this email address
   = record
     email      :: Email
-    name       :: string
+    name       :: Name
     headerType :: HeaderType
 
 attachment :: Attachment 
   // An attachment to be added to the message 
   = record
     mimeType :: string
-    name     :: string
+    name     :: Name
     content  :: string
 
 stamp :: TimeStamp

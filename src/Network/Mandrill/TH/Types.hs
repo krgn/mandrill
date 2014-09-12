@@ -11,13 +11,13 @@ mandrillApi = [api|
 usr :: User
   // A record for a user
   = record 
-    username     :: string
-    created_at   :: string
-    public_id    :: string
-    reputation   :: integer
-    hourly_quota :: integer
-    backlog      :: integer
-    stats        :: Stats
+    username     :: ? string
+    created_at   :: ? TimeStamp
+    public_id    :: ? string
+    reputation   :: ? integer
+    hourly_quota :: ? integer
+    backlog      :: ? integer
+    stats        :: ? Stats
 
 stat :: Stat
   // a stats record 
@@ -53,7 +53,7 @@ sender :: Sender
   // a stats record 
   = record 
     address       :: Email
-    created_at    :: string
+    created_at    :: TimeStamp
     sent          :: Count
     hard_bounces  :: Count
     soft_bounces  :: Count
@@ -83,11 +83,11 @@ domrec :: DomainRecord
   // a domain
   = record
     domain         :: Url
-    created_at     :: string
-    last_tested_at :: string
+    created_at     :: TimeStamp
+    last_tested_at :: TimeStamp
     spf            :: ? Record
     dkim           :: ? Record
-    verified_at    :: ? string
+    verified_at    :: ? TimeStamp
     valid_signing  :: boolean 
 
 domstate :: DomainState
@@ -116,14 +116,14 @@ warmup :: Warmup
   // warmup
   = record
     warming_up :: boolean
-    start_at   :: string
-    end_at     :: string
+    start_at   :: TimeStamp
+    end_at     :: TimeStamp
 
 ip :: IpRecord
   // an ip record 
   = record
     ip         :: IpAddress
-    created_at :: ? string
+    created_at :: ? TimeStamp
     pool       :: ? Name
     domain     :: ? Url
     custom_dns :: ? DnsInfo
@@ -133,8 +133,8 @@ ip :: IpRecord
 pool :: IpPool
   // a ip pool  record
   = record
-    name       :: Name
-    created_at :: ? string
+    name       :: ? Name
+    created_at :: ? TimeStamp
     ips        :: ? [IpRecord]
     deleted    :: ? boolean
 
@@ -147,8 +147,8 @@ trackdom :: TrackingDomain
   // a tracking domain
   = record 
     domain         :: Url 
-    created_at     :: string
-    last_tested_at :: string
+    created_at     :: TimeStamp
+    last_tested_at :: TimeStamp
     cname          :: Record
     valid_tracking :: boolean
 
@@ -169,10 +169,10 @@ tmpl :: Template
     publish_from_email :: ? Email
     publish_from_name  :: ? string
     publish_text       :: ? string
-    published_at       :: ? string
+    published_at       :: ? TimeStamp
     content            :: ? string
-    created_at         :: ? string
-    updated_at         :: ? string
+    created_at         :: ? TimeStamp
+    updated_at         :: ? TimeStamp
 
 hook :: Webhook
   // a webhook
@@ -182,8 +182,8 @@ hook :: Webhook
     description  :: Description
     auth_key     :: AuthKey
     events       :: [MessageEvent]
-    created_at   :: string
-    last_sent_at :: ? string
+    created_at   :: TimeStamp
+    last_sent_at :: ? TimeStamp
     batches_sent :: Count
     events_sent  :: Count
     last_error   :: ? string
@@ -197,8 +197,8 @@ acc  :: Subaccount
     hourly_quota  :: ? Count
     status        :: AccountStatus
     reputation    :: Count
-    created_at    :: string
-    first_sent_at :: ? string
+    created_at    :: ? TimeStamp
+    first_sent_at :: ? TimeStamp
     send_hourly   :: ? Count
     sent_weekly   :: Count 
     sent_monthly  :: Count
@@ -209,7 +209,7 @@ indom :: InboundDomain
   // an inbound domain record
   = record 
     domain     :: Url
-    created_at :: string
+    created_at :: TimeStamp
     valid_mx   :: boolean
 
 inroute :: InboundRoute
@@ -224,8 +224,8 @@ export :: Export
   // an export
   = record 
     id          :: ExportId
-    created_at  :: string
-    finished_at :: ? string
+    created_at  :: TimeStamp
+    finished_at :: ? TimeStamp
     type        :: ExportType
     state       :: ExportState
     result_url  :: ? Url
@@ -236,9 +236,9 @@ reject :: Reject
     email         :: Email
     reason        :: RejectReason
     detail        :: string
-    created_at    :: string
-    last_event_at :: string
-    expires_at    :: string
+    created_at    :: TimeStamp
+    last_event_at :: TimeStamp
+    expires_at    :: TimeStamp
     expired       :: string 
     sender        :: Stat 
     subaccount    :: Subaccount
@@ -248,7 +248,7 @@ whitelist :: Whitelist
   = record 
     email      :: Email
     detail     :: ? string
-    created_at :: ? string
+    created_at :: ? TimeStamp
 
 detail :: Detail
   // A stat containing information how often a messsage has been opened or stuff 
@@ -293,7 +293,7 @@ conf :: MessageConfig
   = record 
     async   :: Async
     ip_pool :: Name
-    send_at :: SendAt 
+    send_at :: ? TimeStamp
 
 msg :: Message
   // A message structure
@@ -321,13 +321,13 @@ msg :: Message
     merge                     :: ? boolean
     global_merge_vars         :: ? [MergeVar]
     merge_vars                :: ? [RecipientMergeVar]
-    tags                      ::   [Tag]
+    tags                      :: ? [Tag]
     subaccount                :: ? string
     google_analytics_domains  :: ? [string]
     google_analytics_campaign :: ? string
     metadata                  :: ? MessageMetadata
     recipient_metadata        :: ? [RecipientMetadata]
-    attachments               ::   [Attachment]
+    attachments               :: ? [Attachment]
     images                    :: ? [Image]
 
 delivery :: DeliveryStatus
@@ -365,8 +365,8 @@ sched :: Scheduled
   // a scheduled message
   = record
     _id        :: MessageId
-    created_at :: string
-    send_at    :: string
+    created_at :: TimeStamp
+    send_at    :: TimeStamp
     from_email :: Email
     to         :: Email
     subject    :: string

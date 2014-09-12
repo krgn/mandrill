@@ -151,7 +151,7 @@ cancelScheduled k i =
 -- | Reschedules a scheduled email.
 reschedule :: ApiKey -> 
              ScheduledId -> 
-             SendAt -> 
+             TimeStamp -> 
              IO (Either ApiError Scheduled)
 reschedule k i s =
            performRequest "/messages/reschedule.json" $

@@ -27,23 +27,16 @@ import Data.Time.Format
 import Data.Time.Clock
 import qualified Data.Text as Text
 
-data TimeStamp = TimeStamp {
-     _ts_string  :: Text.Text,
-     _ts_utctime :: Maybe UTCTime
-     }
+data TimeStamp = TimeStamp { _ts_utctime :: Maybe UTCTime }
 
 instance Show TimeStamp where
   show t = concat [ "TimeStamp { _ts_utctime = "
-                  , show $ _ts_utctime t
-                  , ", _ts_string = "
-                  , Text.unpack $ _ts_string t ]
+                  , show $ _ts_utctime t ]
 
 instance Eq TimeStamp where
   (==) t1 t2
-      | sequal && uequal = True
+      | _ts_utctime t1 == _ts_utctime t2 = True
       | otherwise = False
-      where sequal = _ts_string t1  == _ts_string t2
-            uequal = _ts_utctime t2 == _ts_utctime t2
   (/=) t1 t2 = not (t1 == t2)
 
 
@@ -51,12 +44,12 @@ $(generate utils)
 
 inj_TimeStamp :: REP__TimeStamp -> ParserWithErrs TimeStamp
 inj_TimeStamp  (REP__TimeStamp as) = 
-  return TimeStamp { _ts_string = as,  _ts_utctime = parse' as }
+  return TimeStamp {  _ts_utctime = parse' as }
   where parse' = parseTime defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" . Text.unpack 
 
 prj_TimeStamp :: TimeStamp -> REP__TimeStamp
 prj_TimeStamp mp | isJust (_ts_utctime mp) = REP__TimeStamp (Text.pack fts)
-                 | otherwise = REP__TimeStamp (_ts_string mp)
+                 | otherwise = REP__TimeStamp ""
               where fts = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" $
                             fromJust $ _ts_utctime mp
 
@@ -65,8 +58,7 @@ $(generateAPITools utils [enumTool, jsonTool, mandrillTool])
 
 $(generate mandrillApi)
 $(generateAPITools mandrillApi [enumTool, jsonTool, mandrillTool])
-	
-	
+
 instance Default Template where
   def = Template
         { _tmpl_slug               = Nothing
@@ -92,18 +84,12 @@ instance Default Template where
 instance Default Message where
   def = Message 
         { _msg__id                       = Nothing 
-        , _msg_ts                        = Nothing 
-        , _msg_html                      = "<strong>test</strong>"
-        , _msg_text                      = "test"
-        , _msg_subject                   = "this is a .. "
-        , _msg_from_email                = "karsten@null2.net"
-        , _msg_from_name                 = "Karsten Gebbert"
-        , _msg_to                        = TO_single
-          Recipient
-            { _recipient_email           = "torsten@null2.net"
-            , _recipient_name            = "T. Orsten"
-            , _recipient_type            = Nothing
-            }
+        , _msg_html                      = Nothing
+        , _msg_text                      = Nothing
+        , _msg_subject                   = Nothing
+        , _msg_from_email                = Nothing
+        , _msg_from_name                 = Nothing
+        , _msg_to                        = Nothing
         , _msg_important                 = Just False
         , _msg_track_opens               = Nothing
         , _msg_track_clicks              = Nothing
@@ -120,12 +106,12 @@ instance Default Message where
         , _msg_merge                     = Just True
         , _msg_global_merge_vars         = Just []
         , _msg_merge_vars                = Just []
-        , _msg_tags                      = []
+        , _msg_tags                      = Just []
         , _msg_subaccount                = Nothing
         , _msg_google_analytics_domains  = Nothing
         , _msg_google_analytics_campaign = Nothing
         , _msg_metadata                  = Nothing
         , _msg_recipient_metadata        = Nothing
-        , _msg_attachments               = []
+        , _msg_attachments               = Just []
         , _msg_images                    = Nothing
         }

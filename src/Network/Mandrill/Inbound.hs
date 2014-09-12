@@ -73,7 +73,7 @@ deleteRoute k i =
 
 -- | Take a raw MIME document destined for a domain with inbound domains set 
 -- up, and send it to the inbound hook exactly as if it had been sent over SMTP
-sendRaw :: ApiKey -> RawMessage -> To -> Email -> Helo -> ClientAddress -> IO (Either ApiError InboundRoute)
+sendRaw :: ApiKey -> RawMessage -> To -> Email -> Helo -> ClientAddress -> IO (Either ApiError [InboundRoute])
 sendRaw k r t e h a =
         performRequest "/inbound/send-raw.json" $
           object [ "key"            .= k
