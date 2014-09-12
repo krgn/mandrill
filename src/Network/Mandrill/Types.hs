@@ -21,27 +21,44 @@ import Data.API.Tools.Mandrill
 import Network.Mandrill.Response
 import Network.Mandrill.TH.Utils
 import Network.Mandrill.TH.Types
+import Data.Maybe
 import System.Locale
 import Data.Time.Format
 import Data.Time.Clock
 import qualified Data.Text as Text
 
+data TimeStamp = TimeStamp {
+     _ts_string  :: Text.Text,
+     _ts_utctime :: Maybe UTCTime
+     }
+
+instance Show TimeStamp where
+  show t = concat [ "TimeStamp { _ts_utctime = "
+                  , show $ _ts_utctime t
+                  , ", _ts_string = "
+                  , Text.unpack $ _ts_string t ]
+
+instance Eq TimeStamp where
+  (==) t1 t2
+      | sequal && uequal = True
+      | otherwise = False
+      where sequal = _ts_string t1  == _ts_string t2
+            uequal = _ts_utctime t2 == _ts_utctime t2
+  (/=) t1 t2 = not (t1 == t2)
+
+
 $(generate utils)
 
--- created_at 
--- parseTime defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" a
-
-type TimeStamp = Maybe UTCTime
--- 
 inj_TimeStamp :: REP__TimeStamp -> ParserWithErrs TimeStamp
 inj_TimeStamp  (REP__TimeStamp as) = 
-  return $ parseTime defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" (Text.unpack as)
+  return TimeStamp { _ts_string = as,  _ts_utctime = parse' as }
+  where parse' = parseTime defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" . Text.unpack 
 
 prj_TimeStamp :: TimeStamp -> REP__TimeStamp
-prj_TimeStamp (Just mp) = REP__TimeStamp $ 
-  Text.pack $ formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" mp
-prj_TimeStamp  Nothing   = REP__TimeStamp $ 
-  Text.pack ""
+prj_TimeStamp mp | isJust (_ts_utctime mp) = REP__TimeStamp (Text.pack fts)
+                 | otherwise = REP__TimeStamp (_ts_string mp)
+              where fts = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" $
+                            fromJust $ _ts_utctime mp
 
 $(generateAPITools utils [enumTool, jsonTool, mandrillTool])
 
@@ -75,12 +92,13 @@ instance Default Template where
 instance Default Message where
   def = Message 
         { _msg__id                       = Nothing 
-        , _msg_html                      = Nothing
-        , _msg_text                      = Nothing
-        , _msg_subject                   = Nothing
-        , _msg_from_email                = Nothing
-        , _msg_from_name                 = Nothing
-        , _msg_to                        = Just $ TO_single
+        , _msg_ts                        = Nothing 
+        , _msg_html                      = "<strong>test</strong>"
+        , _msg_text                      = "test"
+        , _msg_subject                   = "this is a .. "
+        , _msg_from_email                = "karsten@null2.net"
+        , _msg_from_name                 = "Karsten Gebbert"
+        , _msg_to                        = TO_single
           Recipient
             { _recipient_email           = "torsten@null2.net"
             , _recipient_name            = "T. Orsten"

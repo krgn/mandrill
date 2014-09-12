@@ -233,11 +233,7 @@ attachment :: Attachment
     content  :: string
 
 stamp :: TimeStamp
-  = basic string 
-    with inj_TimeStamp, prj_TimeStamp
-
-test :: TextRec
-  = record 
-    created_at :: TimeStamp
+  = basic string
+  with inj_TimeStamp, prj_TimeStamp
 
 |]
