@@ -14,10 +14,8 @@ import qualified Data.ByteString.Lazy as LBS
 
 
 -- | Return the information about the API-connected `User`
-info :: ApiKey -> IO (Either ApiError User)
-info key = 
-     performRequest "/users/info.json" $
-       object ["key" .= key]
+info :: (MonadIO m) => MandrillT m (Either ApiError User)
+info = performRequest "/users/info.json" []
 
 
 -- | Validate an API key and respond to a ping
@@ -28,7 +26,5 @@ ping key =
 
 -- | Return the senders that have tried to use this account, 
 -- both verified and unverified
-senders :: ApiKey -> IO (Either ApiError [Stat])
-senders key = 
-        performRequest "/users/senders.json" $
-          object ["key" .= key]
+senders :: (MonadIO m) => MandrillT m (Either ApiError [Stat])
+senders = performRequest "/users/senders.json" []

@@ -9,61 +9,68 @@ import Network.Mandrill.Types
 
 -- | Get the list of subaccounts defined for the account, 
 -- optionally filtered by a prefix
-list :: ApiKey -> Query -> IO (Either ApiError [Subaccount])
-list k q = 
-     performRequest "/subaccounts/list.json" $
-       object [ "key" .= k, "q" .= q ]
+list :: (MonadIO m) =>
+       Query -> 
+       MandrillT m (Either ApiError [Subaccount])
+list q = performRequest "/subaccounts/list.json" [ "q" .= q ]
 
 
 -- | Add a new subaccount
-add :: ApiKey -> SubaccountId -> Name -> Notes -> Count -> IO (Either ApiError Subaccount)
-add k s na no c =
+add :: (MonadIO m) =>
+      SubaccountId -> 
+      Name ->
+      Notes -> 
+      Count -> 
+      MandrillT m (Either ApiError Subaccount)
+add s na no c =
     performRequest "/subaccounts/add.json" $
-      object [ "key"          .= k
-             , "id"           .= s
+             [ "id"           .= s
              , "name"         .= na
              , "notes"        .= no
              , "custom_quota" .= c ]
 
 
 -- | Given the ID of an existing subaccount, return the data about it
-info :: ApiKey -> SubaccountId -> IO (Either ApiError Subaccount)
-info k i =
-     performRequest "/subaccounts/info.json" $
-       object [ "key" .= k , "id" .= i ]
+info :: (MonadIO m) =>
+       SubaccountId -> 
+       MandrillT m (Either ApiError Subaccount)
+info i = performRequest "/subaccounts/info.json" [ "id" .= i ]
 
 
 -- | Update an existing subaccount
-update :: ApiKey -> SubaccountId -> Name -> Notes -> Count -> IO (Either ApiError Subaccount)
-update k s na no c = 
-       performRequest "/subaccounts/update.json" $
-         object [ "key"          .= k
-                , "id"           .= s
-                , "name"         .= na
-                , "notes"        .= no
-                , "custom_quota" .= c ]
+update :: (MonadIO m) =>
+         SubaccountId -> 
+         Name -> 
+         Notes -> 
+         Count -> 
+         MandrillT m (Either ApiError Subaccount)
+update s na no c = 
+  performRequest "/subaccounts/update.json" $
+          [ "id"           .= s
+          , "name"         .= na
+          , "notes"        .= no
+          , "custom_quota" .= c ]
 
 
 -- | Delete an existing subaccount. Any email related to the subaccount will be 
 -- saved, but stats will be removed and any future sending calls to this 
 -- subaccount will fail.
-delete :: ApiKey -> SubaccountId -> IO (Either ApiError Subaccount)
-delete k i =
-       performRequest "/subaccounts/delete.json" $
-         object [ "key" .= k , "id" .= i ]
-
+delete :: (MonadIO m) => 
+         SubaccountId -> 
+         MandrillT m (Either ApiError Subaccount)
+delete i = performRequest "/subaccounts/delete.json" [ "id" .= i ] 
 
 -- | Pause a subaccount's sending. Any future emails delivered to this 
 -- subaccount will be queued for a maximum of 3 days until the subaccount 
 -- is resumed.
-pause :: ApiKey -> SubaccountId -> IO (Either ApiError Subaccount)
-pause k i = 
-      performRequest "/subaccounts/pause.json" $
-        object [ "key" .= k , "id" .= i ]
+pause :: (MonadIO m) => 
+        SubaccountId -> 
+        MandrillT m (Either ApiError Subaccount)
+pause i = performRequest "/subaccounts/pause.json" [ "id" .= i ]
 
 
 -- | Resume a paused subaccount's sending
-resume :: ApiKey -> SubaccountId -> IO (Either ApiError Subaccount)
-resume k i =
-       performRequest "/subaccounts/resume.json" $
-         object [ "key" .= k , "id" .= i ]
+resume :: (MonadIO m) => 
+         SubaccountId -> 
+         MandrillT m (Either ApiError Subaccount)
+resume i = performRequest "/subaccounts/resume.json" [ "id" .= i ]

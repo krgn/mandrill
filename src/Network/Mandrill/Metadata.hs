@@ -7,34 +7,26 @@ import Network.Mandrill.Types
 import Network.Mandrill.Utils
 
 -- | Get the list of custom metadata fields indexed for the account.
-list :: ApiKey -> IO (Either ApiError [Metadata])
-list k = 
-     performRequest "/metadata/list.json" $
-       object [ "key" .= k ]
+list :: (MonadIO m) => MandrillT m (Either ApiError [Metadata])
+list  = performRequest "/metadata/list.json" []
 
 
 -- | Add a new custom metadata field to be indexed for the account.
-delete :: ApiKey -> Name -> IO (Either ApiError Metadata)
-delete k n = 
-       performRequest "/metadata/delete.json" $
-         object [ "key" .= k, "name" .= n ]
+delete :: (MonadIO m) => Name -> MandrillT m (Either ApiError Metadata)
+delete n = performRequest "/metadata/delete.json" [ "name" .= n ]
 
 
 -- | Update an existing custom metadata field.
-add :: ApiKey -> Metadata ->  IO (Either ApiError Metadata)
-add k m  = 
-    performRequest "/metadata/add.json" $
-      object [ "key"           .= k
-             , "name"          .= _metadata_name m
+add :: (MonadIO m) => Metadata ->  MandrillT m (Either ApiError Metadata)
+add m  = performRequest "/metadata/add.json" $
+             [ "name"          .= _metadata_name m
              , "view_template" .= _metadata_view_template m ]
 
 
 -- | Delete an existing custom metadata field. Deletion isn't instataneous, 
 -- and /metadata/list will continue to return the field until the  
 -- asynchronous deletion process is complete.
-update :: ApiKey -> Metadata ->  IO (Either ApiError Metadata)
-update k m  = 
-        performRequest "/metadata/update.json" $
-          object [ "key"           .= k
-                 , "name"          .= _metadata_name m
+update :: (MonadIO m) => Metadata ->  MandrillT m (Either ApiError Metadata)
+update m  = performRequest "/metadata/update.json" $
+                 [ "name"          .= _metadata_name m
                  , "view_template" .= _metadata_view_template m ]

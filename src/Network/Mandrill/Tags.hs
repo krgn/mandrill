@@ -7,38 +7,29 @@ import Network.Mandrill.Types
 import Network.Mandrill.Utils
 
 -- | Return all of the user-defined tag information
-list :: ApiKey -> IO (Either ApiError [Stat])
-list key =
-     performRequest "/tags/list.json" $
-       object [ "key" .= key ]
+list :: (MonadIO m) => MandrillT m (Either ApiError [Stat])
+list = performRequest "/tags/list.json" []
 
 -- | Return more detailed information about a single tag, including aggregates of recent stats
-info :: ApiKey -> 
-       Tag ->
-       IO (Either ApiError Stat)
-info key tag =
-     performRequest "/tags/info.json" $
-       object [ "key" .= key
-              , "tag" .= tag ]
+info :: (MonadIO m) => 
+       Tag         ->
+       MandrillT m (Either ApiError Stat)
+info tag = performRequest "/tags/info.json" ["tag" .= tag]
 
 -- | Deletes a tag permanently. Deleting a tag removes the tag from any 
 -- messages that have been sent, and also deletes the tag's stats. 
 -- There is no way to undo this operation, so use it carefully.
-delete :: ApiKey -> Tag -> IO (Either ApiError Stat)
-delete key tag =
-       performRequest "/tags/delete.json" $
-         object [ "key" .= key
-                , "tag" .= tag ]
+delete :: (MonadIO m) => 
+          Tag -> 
+          MandrillT m (Either ApiError Stat)
+delete tag = performRequest "/tags/delete.json" ["tag" .= tag]
 
 -- | Return the recent history (hourly stats for the last 30 days) for a tag
-timeSeries :: ApiKey -> Tag -> IO (Either ApiError Stat)
-timeSeries key tag =
-           performRequest "/tags/time-series.json" $
-             object [ "key" .= key
-                    , "tag" .= tag ]
+timeSeries :: (MonadIO m) => 
+             Tag -> 
+             MandrillT m (Either ApiError Stat)
+timeSeries tag = performRequest "/tags/time-series.json" ["tag" .= tag]
 
 -- | Return the recent history (hourly stats for the last 30 days) for all tags
-allTimeSeries :: ApiKey -> IO (Either ApiError Stat)
-allTimeSeries key = 
-              performRequest "/tags/time-series.json" $
-                object [ "key" .= key ]
+allTimeSeries :: (MonadIO m) => MandrillT m (Either ApiError Stat)
+allTimeSeries = performRequest "/tags/time-series.json" []

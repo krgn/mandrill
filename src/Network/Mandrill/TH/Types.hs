@@ -11,7 +11,7 @@ mandrillApi = [api|
 usr :: User
   // A record for a user
   = record 
-    username     :: ? string
+    username     :: string
     created_at   :: ? TimeStamp
     public_id    :: ? string
     reputation   :: ? integer
