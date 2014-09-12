@@ -9,11 +9,13 @@ import qualified Data.ByteString.Char8  as CBS
 import qualified Data.ByteString.Lazy   as LBS
 import           System.Environment
 
+
 spec :: Spec
 spec = do
   test_info
   test_ping
   test_senders
+
 
 test_info :: Spec
 test_info = 
@@ -24,6 +26,7 @@ test_info =
       response <- Users.info key
       response `shouldSatisfy` isRight
 
+
 test_ping :: Spec
 test_ping = 
   describe "/users/ping.json" $
@@ -32,6 +35,7 @@ test_ping =
       let key = ApiKey { _ApiKey =  Text.pack raw }
       response <- Users.ping key
       CBS.unpack (LBS.toStrict response) `shouldBe` "\"PONG!\""
+
 
 test_senders :: Spec
 test_senders = 

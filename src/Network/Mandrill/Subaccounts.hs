@@ -6,6 +6,7 @@ import Network.Mandrill.Response
 import Network.Mandrill.Utils
 import Network.Mandrill.Types
 
+
 -- | Get the list of subaccounts defined for the account, 
 -- optionally filtered by a prefix
 list :: ApiKey -> Query -> IO (Either ApiError [Subaccount])
@@ -23,6 +24,7 @@ add k s na no c =
              , "name"         .= na
              , "notes"        .= no
              , "custom_quota" .= c ]
+
 
 -- | Given the ID of an existing subaccount, return the data about it
 info :: ApiKey -> SubaccountId -> IO (Either ApiError Subaccount)
