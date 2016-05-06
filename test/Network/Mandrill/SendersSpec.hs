@@ -11,7 +11,7 @@ import qualified Network.Mandrill.Senders as Senders
 import           System.Environment
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_list
   test_domains
   test_addDomain

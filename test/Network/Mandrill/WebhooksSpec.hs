@@ -11,7 +11,7 @@ import           System.Environment
 import Data.Maybe
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_list
   test_add
   test_info

@@ -63,7 +63,7 @@ library
 test-suite spec
   type:                exitcode-stdio-1.0
 
-  ghc-options:         -Wall -Werror 
+  ghc-options:         -Wall -Werror -threaded
   
   hs-source-dirs:      src
                      , test

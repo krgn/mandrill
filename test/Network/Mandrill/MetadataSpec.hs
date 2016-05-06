@@ -11,7 +11,7 @@ import qualified Network.Mandrill.Metadata as Metadata
 import           System.Environment
 
 spec :: Spec
-spec = do
+spec =  parallel $ do
   test_list
   test_add
   test_update

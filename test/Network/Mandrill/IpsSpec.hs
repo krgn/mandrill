@@ -10,7 +10,7 @@ import qualified Network.Mandrill.Ips   as Ips
 import           System.Environment
 
 spec :: Spec
-spec = do
+spec =  parallel $ do
   test_list
   test_info
   test_provision

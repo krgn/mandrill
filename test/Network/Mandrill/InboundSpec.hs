@@ -11,7 +11,7 @@ import qualified Network.Mandrill.Inbound as Inbound
 import           System.Environment
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_domains
   test_addDomain
   test_checkDomain
@@ -66,8 +66,8 @@ test_routes =
   describe "/inbound/routes.json" $
     it "should list all routes" $ do
       raw <- getEnv "MANDRILL_API_KEY"
-      resp <- runMandrill (ApiKey $ Text.pack raw) $
-        Inbound.routes "example.com"
+      resp <- runMandrill (ApiKey $ Text.pack raw) $ do
+        Inbound.addDomain "example.com" >> Inbound.routes "example.com"
       resp `shouldSatisfy` isRight
 
 test_deleteDomain :: Spec

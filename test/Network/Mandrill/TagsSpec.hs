@@ -11,7 +11,7 @@ import System.Environment
 import qualified Data.Text as Text
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_list
   test_delete
   test_info
