@@ -11,7 +11,7 @@ import qualified Network.Mandrill.Whitelists as Whitelist
 import           System.Environment
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_add
   test_list
   test_delete

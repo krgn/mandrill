@@ -11,7 +11,7 @@ import           System.Environment
 
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_info
   test_list
   test_rejects

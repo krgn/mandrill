@@ -11,7 +11,7 @@ import qualified Network.Mandrill.Urls  as Urls
 import           System.Environment
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_list
   test_search
   test_timeSeries

@@ -11,7 +11,7 @@ import qualified Network.Mandrill.Templates as Templates
 import           System.Environment
 
 spec :: Spec
-spec = do
+spec = parallel $ do
   test_add
   test_info
   test_update
